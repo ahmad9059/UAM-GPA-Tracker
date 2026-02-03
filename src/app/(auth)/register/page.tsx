@@ -1,0 +1,191 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Mail, Lock, User, UserPlus, Loader2, GraduationCap } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
+import { signUp } from "@/lib/auth-client";
+import { registerSchema, type RegisterFormData } from "@/lib/validation";
+
+export default function RegisterPage() {
+  const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const form = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  async function onSubmit(data: RegisterFormData) {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const result = await signUp.email({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
+
+      if (result.error) {
+        if (result.error.message?.includes("already exists")) {
+          setError("An account with this email already exists");
+        } else {
+          setError(result.error.message || "Failed to create account");
+        }
+        return;
+      }
+
+      router.push("/dashboard");
+      router.refresh();
+    } catch (err) {
+      console.error("Registration error:", err);
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-50 px-4 py-12">
+      <div className="w-full max-w-md">
+        <div className="flex justify-center mb-8">
+          <Link href="/" className="flex items-center gap-2 text-primary hover:opacity-80 transition-opacity">
+            <GraduationCap className="h-10 w-10" />
+            <span className="text-2xl font-bold">GPA Tracker</span>
+          </Link>
+        </div>
+
+        <Card className="border-0 shadow-xl">
+          <CardHeader className="space-y-1 text-center">
+            <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
+            <CardDescription>
+              Start tracking your academic progress today
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent>
+            {error && (
+              <Alert variant="destructive" className="mb-6">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Full Name</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            placeholder="Your full name"
+                            className="pl-10"
+                            disabled={isLoading}
+                            {...field}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            type="email"
+                            placeholder="you@example.com"
+                            className="pl-10"
+                            disabled={isLoading}
+                            {...field}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            type="password"
+                            placeholder="At least 8 characters"
+                            className="pl-10"
+                            disabled={isLoading}
+                            {...field}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Creating account...
+                    </>
+                  ) : (
+                    <>
+                      <UserPlus className="mr-2 h-4 w-4" />
+                      Create account
+                    </>
+                  )}
+                </Button>
+              </form>
+            </Form>
+          </CardContent>
+
+          <CardFooter className="flex flex-col space-y-4">
+            <div className="text-sm text-center text-muted-foreground">
+              Already have an account?{" "}
+              <Link href="/login" className="text-primary hover:underline font-medium">
+                Sign in
+              </Link>
+            </div>
+            <div className="text-xs text-center text-muted-foreground">
+              By creating an account, you agree to track your GPA responsibly.
+            </div>
+          </CardFooter>
+        </Card>
+      </div>
+    </div>
+  );
+}
