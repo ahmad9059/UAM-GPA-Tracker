@@ -21,13 +21,31 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 import { calculateGPA, type GPAResult } from "@/lib/gpa-calculator";
-import { type TotalMarksType, VALID_TOTAL_MARKS } from "@/lib/quality-points";
+import {
+  type TotalMarksType,
+  VALID_TOTAL_MARKS,
+  isValidTotalMarks,
+} from "@/lib/quality-points";
 
 type CalculatorCourse = {
   id: string;
   creditHours: string;
   totalMarks: TotalMarksType;
   obtainedMarks: string;
+};
+
+const creditToTotalMarks = (credit: string | number): TotalMarksType | null => {
+  const num = typeof credit === "number" ? credit : parseFloat(credit);
+  if (!Number.isFinite(num)) return null;
+  const rounded = Math.round(num);
+  if (rounded < 1 || rounded > 5) return null;
+  const mapped = rounded * 20;
+  return isValidTotalMarks(mapped) ? (mapped as TotalMarksType) : null;
+};
+
+const totalToCreditHours = (total: TotalMarksType): string | null => {
+  const credit = total / 20;
+  return credit >= 1 && credit <= 5 ? String(credit) : null;
 };
 
 const emptyResult: GPAResult = {
@@ -39,7 +57,7 @@ const emptyResult: GPAResult = {
 
 export default function CalculatorPage() {
   const [courses, setCourses] = useState<CalculatorCourse[]>([
-    { id: uuidv4(), creditHours: "", totalMarks: 100, obtainedMarks: "" },
+    { id: uuidv4(), creditHours: "3", totalMarks: 60, obtainedMarks: "" },
   ]);
   const [result, setResult] = useState<GPAResult>(emptyResult);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -55,8 +73,8 @@ export default function CalculatorPage() {
         return false;
       }
 
-      if (isNaN(creditHours) || creditHours <= 0) {
-        newErrors[`${course.id}-creditHours`] = "Credit hours must be positive";
+      if (isNaN(creditHours) || creditHours < 1 || creditHours > 5) {
+        newErrors[`${course.id}-creditHours`] = "Credit hours must be between 1 and 5";
         return false;
       }
 
@@ -97,7 +115,7 @@ export default function CalculatorPage() {
   const addCourse = () => {
     setCourses([
       ...courses,
-      { id: uuidv4(), creditHours: "", totalMarks: 100, obtainedMarks: "" },
+      { id: uuidv4(), creditHours: "3", totalMarks: 60, obtainedMarks: "" },
     ]);
   };
 
@@ -116,6 +134,51 @@ export default function CalculatorPage() {
       courses.map((course) =>
         course.id === id ? { ...course, [field]: value } : course
       )
+    );
+  };
+
+  const updateCourseWithSync = (
+    id: string,
+    field: keyof CalculatorCourse,
+    value: string | TotalMarksType
+  ) => {
+    setCourses((prev) =>
+      prev.map((course) => {
+        if (course.id !== id) return course;
+
+        // Base update
+        const updated: CalculatorCourse = { ...course, [field]: value } as CalculatorCourse;
+
+        if (field === "creditHours") {
+          const mappedTotal = creditToTotalMarks(value as string);
+          if (mappedTotal) {
+            updated.creditHours = String(mappedTotal / 20);
+            updated.totalMarks = mappedTotal;
+            if (
+              updated.obtainedMarks &&
+              parseFloat(updated.obtainedMarks) > mappedTotal
+            ) {
+              updated.obtainedMarks = "";
+            }
+          }
+        }
+
+        if (field === "totalMarks") {
+          const total = value as TotalMarksType;
+          const mappedCredit = totalToCreditHours(total);
+          if (mappedCredit) {
+            updated.creditHours = mappedCredit;
+          }
+          if (
+            updated.obtainedMarks &&
+            parseFloat(updated.obtainedMarks) > total
+          ) {
+            updated.obtainedMarks = "";
+          }
+        }
+
+        return updated;
+      })
     );
   };
 
@@ -186,11 +249,16 @@ export default function CalculatorPage() {
                         placeholder="3"
                         value={course.creditHours}
                         onChange={(e) =>
-                          updateCourse(course.id, "creditHours", e.target.value)
+                          updateCourseWithSync(
+                            course.id,
+                            "creditHours",
+                            e.target.value
+                          )
                         }
                         className={errors[`${course.id}-creditHours`] ? "border-red-500" : ""}
-                        min="0"
-                        step="0.5"
+                        min="1"
+                        max="5"
+                        step="1"
                       />
                       {errors[`${course.id}-creditHours`] && (
                         <span className="text-xs text-red-500">
@@ -206,7 +274,11 @@ export default function CalculatorPage() {
                       <Select
                         value={String(course.totalMarks)}
                         onValueChange={(value) =>
-                          updateCourse(course.id, "totalMarks", parseInt(value) as TotalMarksType)
+                          updateCourseWithSync(
+                            course.id,
+                            "totalMarks",
+                            parseInt(value) as TotalMarksType
+                          )
                         }
                       >
                         <SelectTrigger>
