@@ -1,0 +1,117 @@
+"use client";
+
+import Link from "next/link";
+import { GraduationCap, Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+
+export function Navbar() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50">
+      <div className="mx-4 mt-4">
+        <nav className="glass-strong rounded-xl max-w-7xl mx-auto">
+          <div className="px-6 py-4 flex items-center justify-between">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="relative">
+                <div className="absolute inset-0 bg-primary/20 rounded-lg blur-lg group-hover:bg-primary/30 transition-all" />
+                <div className="relative bg-gradient-to-br from-primary to-primary/80 p-2 rounded-lg">
+                  <GraduationCap className="h-6 w-6 text-white" />
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-lg font-bold text-foreground leading-tight">
+                  MNS-University
+                </span>
+                <span className="text-xs text-muted-foreground -mt-0.5">
+                  GPA Tracker
+                </span>
+              </div>
+            </Link>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-1">
+              <Link
+                href="#features"
+                className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-lg transition-all"
+              >
+                Features
+              </Link>
+              <Link
+                href="#how-it-works"
+                className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-lg transition-all"
+              >
+                How It Works
+              </Link>
+              <Link
+                href="/calculator"
+                className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-lg transition-all"
+              >
+                Calculator
+              </Link>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="hidden md:flex items-center gap-3">
+              <Button variant="ghost" asChild className="font-medium">
+                <Link href="/login">Sign In</Link>
+              </Button>
+              <Button asChild className="font-semibold shadow-soft hover:shadow-medium transition-shadow">
+                <Link href="/register">Get Started</Link>
+              </Button>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              className="md:hidden p-2 hover:bg-accent/50 rounded-lg transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
+          </div>
+
+          {/* Mobile Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden border-t border-border/50 px-6 py-4 space-y-2">
+              <Link
+                href="#features"
+                className="block px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-lg transition-all"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Features
+              </Link>
+              <Link
+                href="#how-it-works"
+                className="block px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-lg transition-all"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                How It Works
+              </Link>
+              <Link
+                href="/calculator"
+                className="block px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-lg transition-all"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Calculator
+              </Link>
+              <div className="pt-4 flex flex-col gap-2">
+                <Button variant="outline" asChild className="w-full">
+                  <Link href="/login">Sign In</Link>
+                </Button>
+                <Button asChild className="w-full">
+                  <Link href="/register">Get Started</Link>
+                </Button>
+              </div>
+            </div>
+          )}
+        </nav>
+      </div>
+    </header>
+  );
+}

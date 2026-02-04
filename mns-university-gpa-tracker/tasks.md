@@ -1,0 +1,519 @@
+# Implementation Plan: MNS-University GPA Tracker
+
+## Overview
+
+This implementation plan breaks down the MNS-University GPA Tracker into discrete coding tasks. The approach follows a bottom-up strategy: first implementing core calculation logic, then data layer, authentication, UI components, and finally integration. Each task builds on previous work to ensure incremental progress with testable milestones.
+
+**CRITICAL**: Task 1 MUST be completed first. All design skills must be loaded and actively used throughout implementation to ensure professional, unique, attractive design (NO "AI slop").
+
+## Tasks
+
+- [ ] 1. Install and load design skills (CRITICAL - Must be done first)
+  - Run: `npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines`
+  - Run: `npx skills add https://github.com/anthropics/skills --skill frontend-design`
+  - Run: `npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-react-best-practices`
+  - Run: `npx skills add https://github.com/nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max`
+  - Verify all skills are loaded and available
+  - These skills MUST be used throughout the entire implementation to avoid "AI slop" design
+  - _Requirements: 10.2, 10.3, 10.4, 10.5_
+
+- [ ] 2. Set up project structure and dependencies
+  - Initialize Next.js 14+ project with TypeScript and App Router
+  - Install and configure dependencies: Prisma, Better Auth, Tailwind CSS, Recharts, React Hook Form, Zod, fast-check
+  - Install and configure shadcn/ui: Run `npx shadcn-ui@latest init`
+  - Install Lucide React icons: `npm install lucide-react`
+  - Set up Prisma with NeonDB connection
+  - Configure TypeScript with strict mode
+  - Set up testing framework (Jest/Vitest)
+  - Configure Tailwind with blue color scheme
+  - _Requirements: All_
+
+- [ ] 3. Implement quality point tables and lookup logic
+  - [ ] 3.1 Create quality point table constants in `lib/quality-points.ts`
+    - Define TypeScript types for quality point entries and tables
+    - Implement all five quality point tables (20, 40, 60, 80, 100) as constant arrays
+    - Include marks, quality points, and letter grades for each entry
+    - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
+  - [ ] 3.2 Implement quality point lookup function
+    - Write `getQualityPoint(obtainedMarks, totalMarks)` function
+    - Calculate percentage and handle failing grades (< 40%)
+    - Look up correct quality point from appropriate table
+    - Return quality point, grade, and percentage
+    - _Requirements: 4.6, 4.7_
+  - [ ] 3.3 Write property test for quality point lookup
+    - **Property 3: Quality Point Table Lookup Correctness**
+    - **Validates: Requirements 4.1, 4.2, 4.3, 4.4, 4.5**
+    - Generate random marks and total marks combinations
+    - Verify correct quality point, grade, and percentage returned
+  - [ ] 3.4 Write property test for failing grades
+    - **Property 4: Failing Grade Quality Point Assignment**
+    - **Validates: Requirements 4.6**
+    - Generate marks below 40% threshold
+    - Verify quality point is 0.00 and grade is 'F'
+  - [ ] 3.5 Write property test for letter grade assignment
+    - **Property 5: Letter Grade Assignment by Percentage**
+    - **Validates: Requirements 4.7**
+    - Generate marks in each percentage range
+    - Verify correct letter grade assigned
+
+- [ ] 4. Implement GPA calculation logic
+  - [ ] 4.1 Create GPA calculator module in `lib/gpa-calculator.ts`
+    - Define TypeScript types for course input and GPA results
+    - Implement `calculateGPA(courses)` function using formula
+    - Implement `calculateCGPA(semesters)` function
+    - Round results to 2 decimal places
+    - Handle edge cases (empty courses, zero credit hours)
+    - _Requirements: 1.2, 5.1, 5.2, 5.5_
+  - [ ] 4.2 Write property test for GPA calculation formula
+    - **Property 1: GPA Calculation Formula Correctness**
+    - **Validates: Requirements 1.2, 5.1**
+    - Generate random course sets with valid data
+    - Verify GPA equals sum of quality points divided by sum of credit hours
+  - [ ] 4.3 Write property test for CGPA calculation formula
+    - **Property 2: CGPA Calculation Formula Correctness**
+    - **Validates: Requirements 5.2**
+    - Generate random semester sets with courses
+    - Verify CGPA calculation across all semesters
+  - [ ] 4.4 Write property test for GPA precision
+    - **Property 15: GPA Precision**
+    - **Validates: Requirements 5.5**
+    - Generate random course data
+    - Verify all GPA results have exactly 2 decimal places
+  - [ ] 4.5 Write unit tests for edge cases
+    - Test empty course list returns 0.00
+    - Test single course GPA calculation
+    - Test courses with different total marks types
+
+- [ ] 5. Implement input validation
+  - [ ] 5.1 Create validation schemas in `lib/validation.ts`
+    - Define Zod schemas for course input validation
+    - Define Zod schemas for semester input validation
+    - Define Zod schemas for user registration/login
+    - Implement validation helper functions
+    - _Requirements: 3.5, 3.6, 3.7_
+  - [ ] 5.2 Write property test for obtained marks validation
+    - **Property 10: Obtained Marks Validation**
+    - **Validates: Requirements 3.5**
+    - Generate marks exceeding total marks
+    - Verify validation rejects invalid input
+  - [ ] 5.3 Write property test for total marks validation
+    - **Property 11: Total Marks Validation**
+    - **Validates: Requirements 3.6**
+    - Generate invalid total marks values
+    - Verify validation rejects non-allowed values
+  - [ ] 5.4 Write property test for credit hours validation
+    - **Property 12: Credit Hours Validation**
+    - **Validates: Requirements 3.7**
+    - Generate zero and negative credit hours
+    - Verify validation rejects invalid values
+
+- [ ] 6. Set up database schema and Prisma
+  - [ ] 6.1 Define Prisma schema in `prisma/schema.prisma`
+    - Define User model with Better Auth fields
+    - Define Semester model with user relationship
+    - Define Course model with semester relationship
+    - Add indexes for performance
+    - Configure cascade deletion
+    - _Requirements: 9.6, 12.3_
+  - [ ] 6.2 Generate Prisma client and run migrations
+    - Run `prisma generate` to create client
+    - Run `prisma migrate dev` to create database tables
+    - Create `lib/db.ts` with Prisma client singleton
+    - _Requirements: 9.1, 9.2, 9.3_
+  - [ ] 6.3 Write property test for database constraint enforcement
+    - **Property 30: Database Constraint Enforcement**
+    - **Validates: Requirements 9.6**
+    - Attempt to create invalid data
+    - Verify database constraints reject operations
+
+- [ ] 7. Checkpoint - Verify core logic
+  - Ensure all tests pass for quality points, GPA calculation, and validation
+  - Verify database schema is created successfully
+  - Ask the user if questions arise
+
+- [ ] 8. Implement Better Auth configuration
+  - [ ] 8.1 Configure Better Auth in `lib/auth.ts`
+    - Set up email/password authentication
+    - Configure session management
+    - Set up database adapter for Prisma
+    - Configure password hashing
+    - _Requirements: 2.1, 2.2, 2.3_
+  - [ ] 8.2 Create auth API route handler
+    - Create `app/api/auth/[...all]/route.ts`
+    - Export Better Auth handlers for GET and POST
+    - _Requirements: 2.1, 2.2_
+  - [ ] 8.3 Create middleware for protected routes
+    - Create `middleware.ts` for route protection
+    - Redirect unauthenticated users to login
+    - Protect `/dashboard` routes
+    - _Requirements: 2.4, 2.5_
+  - [ ] 8.4 Write property test for session persistence
+    - **Property 25: Session Persistence Across Requests**
+    - **Validates: Requirements 2.6**
+    - Simulate authenticated session
+    - Verify session remains valid across requests
+
+- [ ] 9. Implement server actions for data operations
+  - [ ] 9.1 Create course server actions in `app/actions/course-actions.ts`
+    - Implement `createCourse` action with validation
+    - Implement `updateCourse` action with validation
+    - Implement `deleteCourse` action
+    - Add authentication checks
+    - Add path revalidation after mutations
+    - _Requirements: 3.1, 3.3, 3.4, 9.1, 9.2, 9.3_
+  - [ ] 9.2 Create semester server actions in `app/actions/semester-actions.ts`
+    - Implement `createSemester` action
+    - Implement `getSemesterWithCourses` action
+    - Implement `getAllSemesters` action
+    - Implement `deleteSemester` action with cascade
+    - Add authentication checks
+    - _Requirements: 12.1, 12.2, 12.6_
+  - [ ] 9.3 Write property test for course persistence
+    - **Property 6: Course Addition Persistence**
+    - **Validates: Requirements 3.1, 9.1**
+    - Generate random course data
+    - Verify course is created and retrievable
+  - [ ] 9.4 Write property test for course updates
+    - **Property 7: Course Update Persistence**
+    - **Validates: Requirements 3.3, 9.2**
+    - Create course, then update fields
+    - Verify updates are persisted
+  - [ ] 9.5 Write property test for course deletion
+    - **Property 8: Course Deletion Persistence**
+    - **Validates: Requirements 3.4, 9.3**
+    - Create course, then delete it
+    - Verify course is removed from database
+  - [ ] 9.6 Write property test for semester cascade deletion
+    - **Property 22: Semester Cascade Deletion**
+    - **Validates: Requirements 12.6**
+    - Create semester with courses, then delete semester
+    - Verify all associated courses are deleted
+
+- [ ] 10. Implement authentication pages
+  - [ ] 10.1 Create registration page in `app/(auth)/register/page.tsx`
+    - Build registration form with email and password fields using shadcn/ui Form components
+    - Add form validation with Zod
+    - Integrate with Better Auth registration
+    - Handle registration errors with shadcn/ui Alert
+    - Redirect to dashboard on success
+    - Use Lucide icons (Mail, Lock, UserPlus, etc.)
+    - MUST apply design guidelines from loaded skills (web-design-guidelines, frontend-design, vercel-react-best-practices, ui-ux-pro-max)
+    - _Requirements: 2.1, 2.3_
+  - [ ] 10.2 Create login page in `app/(auth)/login/page.tsx`
+    - Build login form with email and password fields using shadcn/ui Form components
+    - Add form validation
+    - Integrate with Better Auth login
+    - Handle authentication errors with shadcn/ui Alert
+    - Redirect to dashboard on success
+    - Use Lucide icons (Mail, Lock, LogIn, etc.)
+    - MUST apply design guidelines from loaded skills
+    - _Requirements: 2.2, 2.4, 2.5, 11.3_
+  - [ ] 10.3 Write property test for user registration
+    - **Property 24: User Registration Creates Account**
+    - **Validates: Requirements 2.3**
+    - Generate random registration data
+    - Verify user account is created in database
+
+- [ ] 11. Create reusable UI components
+  - [ ] 11.1 Install shadcn/ui base components
+    - Run: `npx shadcn-ui@latest add button`
+    - Run: `npx shadcn-ui@latest add input`
+    - Run: `npx shadcn-ui@latest add card`
+    - Run: `npx shadcn-ui@latest add table`
+    - Run: `npx shadcn-ui@latest add dialog`
+    - Run: `npx shadcn-ui@latest add form`
+    - Run: `npx shadcn-ui@latest add label`
+    - Run: `npx shadcn-ui@latest add select`
+    - Run: `npx shadcn-ui@latest add badge`
+    - Run: `npx shadcn-ui@latest add alert`
+    - Customize components with blue color scheme
+    - Use Lucide icons throughout (import from 'lucide-react')
+    - MUST follow design guidelines from loaded skills (web-design-guidelines, frontend-design, vercel-react-best-practices, ui-ux-pro-max)
+    - _Requirements: 10.8, 10.9, 10.10_
+  - [ ] 11.2 Create form components
+    - CourseForm component with validation using shadcn/ui Form
+    - SemesterForm component using shadcn/ui Form
+    - Reusable FormField component with error display
+    - Use Lucide icons for form actions (Plus, Edit, Trash, Save, X, etc.)
+    - MUST follow design guidelines from loaded skills
+    - _Requirements: 11.1_
+  - [ ] 11.3 Write property test for validation error display
+    - **Property 27: Validation Error Display**
+    - **Validates: Requirements 11.1**
+    - Submit forms with invalid data
+    - Verify error messages are displayed
+
+- [ ] 12. Implement public GPA calculator
+  - [ ] 12.1 Create calculator page in `app/(public)/calculator/page.tsx`
+    - Build client component with local state
+    - Implement add/remove course functionality using shadcn/ui Button and Dialog
+    - Create course input form using shadcn/ui Input, Select, and Form components
+    - Display real-time GPA calculation in shadcn/ui Card
+    - Show breakdown of quality points and grades in shadcn/ui Table
+    - Use Lucide icons (Plus, Trash2, Calculator, TrendingUp, etc.)
+    - MUST follow design guidelines from loaded skills
+    - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.7_
+  - [ ] 12.2 Write property test for course list management
+    - **Property 16: Public Calculator Course Management**
+    - **Validates: Requirements 1.3, 1.4**
+    - Add courses and verify list grows
+    - Remove courses and verify list shrinks
+  - [ ] 12.3 Write property test for optional course names
+    - **Property 17: Public Calculator Optional Course Names**
+    - **Validates: Requirements 1.7**
+    - Calculate GPA without course names
+    - Verify calculation succeeds
+
+- [ ] 13. Implement landing page
+  - [ ] 13.1 Create landing page in `app/(public)/page.tsx`
+    - Build hero section with headline and CTAs using shadcn/ui Button
+    - Create features section with shadcn/ui Card components
+    - Add "How It Works" section with step indicators
+    - Add about section for university grading system
+    - Create footer with links
+    - Implement responsive design with Tailwind
+    - Apply blue color scheme
+    - Use Lucide icons throughout (GraduationCap, Calculator, BarChart3, TrendingUp, CheckCircle, ArrowRight, etc.)
+    - MUST follow ALL design guidelines from loaded skills (web-design-guidelines, frontend-design, vercel-react-best-practices, ui-ux-pro-max)
+    - NO "AI slop" design - use professional, unique, attractive design
+    - _Requirements: 8.1, 8.2, 8.3, 8.4, 10.1_
+  - [ ] 13.2 Write unit tests for landing page elements
+    - Test hero section renders
+    - Test CTA buttons are present
+    - Test navigation links work
+
+- [ ] 14. Checkpoint - Verify public features
+  - Test public calculator functionality
+  - Test landing page displays correctly
+  - Test authentication pages work
+  - Ask the user if questions arise
+
+- [ ] 15. Implement dashboard layout and main page
+  - [ ] 15.1 Create dashboard layout in `app/dashboard/layout.tsx`
+    - Add navigation header with logout button using shadcn/ui Button
+    - Add sidebar with links using shadcn/ui navigation components
+    - Implement protected layout wrapper
+    - Use Lucide icons (Home, BookOpen, Calculator, BarChart3, LogOut, Menu, etc.)
+    - MUST follow design guidelines from loaded skills
+    - _Requirements: 6.1_
+  - [ ] 15.2 Create main dashboard page in `app/dashboard/page.tsx`
+    - Fetch user's semester data using server component
+    - Display overview cards using shadcn/ui Card (CGPA, total credit hours, semester count)
+    - List all semesters with GPAs in shadcn/ui Card or Table
+    - Add "Create Semester" button using shadcn/ui Button
+    - Use Lucide icons (Plus, BookOpen, Award, Clock, etc.)
+    - MUST follow design guidelines from loaded skills
+    - _Requirements: 6.1, 6.3, 6.4_
+  - [ ] 15.3 Write property test for user data isolation
+    - **Property 18: User Data Isolation**
+    - **Validates: Requirements 6.7**
+    - Create multiple users with data
+    - Verify each user sees only their own data
+
+- [ ] 16. Implement semester detail and course management
+  - [ ] 16.1 Create semester detail page in `app/dashboard/semester/[id]/page.tsx`
+    - Fetch semester with courses
+    - Display semester name and GPA in shadcn/ui Card
+    - Show courses in shadcn/ui Table format
+    - Add inline edit/delete actions using shadcn/ui Button and Dialog
+    - Add "Add Course" button using shadcn/ui Button
+    - Use Lucide icons (Edit, Trash2, Plus, BookOpen, Award, etc.)
+    - MUST follow design guidelines from loaded skills
+    - _Requirements: 6.2, 6.5, 12.4_
+  - [ ] 16.2 Implement course CRUD operations
+    - Wire up createCourse action to form with shadcn/ui Dialog
+    - Wire up updateCourse action to edit form with shadcn/ui Dialog
+    - Wire up deleteCourse action to delete button with shadcn/ui AlertDialog
+    - Add optimistic UI updates
+    - Handle errors and display messages using shadcn/ui Alert
+    - _Requirements: 3.1, 3.3, 3.4, 11.2_
+  - [ ] 16.3 Write property test for course-semester association
+    - **Property 9: Course-Semester Association Integrity**
+    - **Validates: Requirements 3.2, 9.4, 12.3**
+    - Create courses in different semesters
+    - Verify each course belongs to exactly one semester
+  - [ ] 16.4 Write property test for dashboard data completeness
+    - **Property 19: Dashboard Data Completeness**
+    - **Validates: Requirements 6.2**
+    - Render course table
+    - Verify all required fields are displayed
+  - [ ] 16.5 Write property test for course grouping
+    - **Property 31: Course Grouping by Semester**
+    - **Validates: Requirements 12.4**
+    - Create multiple semesters with courses
+    - Verify courses are grouped correctly
+
+- [ ] 17. Implement GPA recalculation logic
+  - [ ] 17.1 Add recalculation to course mutations
+    - After createCourse, recalculate semester GPA and CGPA
+    - After updateCourse, recalculate semester GPA and CGPA
+    - After deleteCourse, recalculate semester GPA and CGPA
+    - Ensure calculations use latest data
+    - _Requirements: 3.8, 5.3, 5.4_
+  - [ ] 17.2 Write property test for GPA recalculation
+    - **Property 13: GPA Recalculation on Course Modification**
+    - **Validates: Requirements 5.3**
+    - Modify courses in a semester
+    - Verify semester GPA updates
+  - [ ] 17.3 Write property test for CGPA recalculation
+    - **Property 14: CGPA Recalculation on Course Modification**
+    - **Validates: Requirements 5.4**
+    - Modify courses across semesters
+    - Verify CGPA updates
+
+- [ ] 18. Implement visual analytics with charts
+  - [ ] 18.1 Create chart components in `components/dashboard/`
+    - Create BarChart component for GPA per semester using Recharts
+    - Create LineChart component for GPA trends using Recharts
+    - Wrap charts in shadcn/ui Card components
+    - Use blue color scheme matching Tailwind config
+    - Make charts responsive
+    - Use Lucide icons for chart headers (BarChart3, TrendingUp, LineChart, etc.)
+    - MUST follow design guidelines from loaded skills
+    - _Requirements: 7.1, 7.2, 7.4_
+  - [ ] 18.2 Integrate charts into dashboard
+    - Add charts to main dashboard page
+    - Pass semester GPA data to charts
+    - Handle empty state when no data using shadcn/ui Alert or Card
+    - _Requirements: 7.5_
+  - [ ] 18.3 Write property test for chart data reactivity
+    - **Property 26: Chart Data Reactivity**
+    - **Validates: Requirements 7.3**
+    - Modify course data
+    - Verify chart data updates
+
+- [ ] 19. Implement integrated dashboard calculator
+  - [ ] 19.1 Create dashboard calculator component
+    - Build calculator similar to public version using shadcn/ui components
+    - Add course name field (required for dashboard)
+    - Add "Save to Semester" functionality using shadcn/ui Button
+    - Pre-fill with current semester data option
+    - Use Lucide icons (Calculator, Save, Plus, etc.)
+    - MUST follow design guidelines from loaded skills
+    - _Requirements: 6.6_
+  - [ ] 19.2 Integrate calculator into dashboard
+    - Add calculator to dashboard page or as shadcn/ui Dialog modal
+    - Wire up save functionality to createCourse action
+    - _Requirements: 6.6_
+
+- [ ] 20. Implement semester management features
+  - [ ] 20.1 Add semester creation functionality
+    - Create semester form using shadcn/ui Dialog modal
+    - Wire up createSemester action
+    - Redirect to semester detail after creation
+    - Use Lucide icons (Plus, BookOpen, Save, etc.)
+    - MUST follow design guidelines from loaded skills
+    - _Requirements: 12.1, 12.2_
+  - [ ] 20.2 Add semester deletion functionality
+    - Add delete button using shadcn/ui Button to semester list
+    - Show confirmation using shadcn/ui AlertDialog
+    - Wire up deleteSemester action
+    - Handle cascade deletion of courses
+    - Use Lucide icons (Trash2, AlertTriangle, etc.)
+    - _Requirements: 12.6_
+  - [ ] 20.3 Write property test for semester creation
+    - **Property 21: Semester Creation and Naming**
+    - **Validates: Requirements 12.1, 12.2**
+    - Create semesters with random names
+    - Verify semesters are persisted with correct data
+  - [ ] 20.4 Write property test for independent semester GPA
+    - **Property 23: Independent Semester GPA Calculation**
+    - **Validates: Requirements 12.5**
+    - Create multiple semesters with different courses
+    - Verify each semester GPA is calculated independently
+
+- [ ] 21. Implement error handling and logging
+  - [ ] 21.1 Add error boundaries to components
+    - Create ErrorBoundary component
+    - Wrap dashboard and calculator in error boundaries
+    - Display user-friendly error messages using shadcn/ui Alert
+    - Use Lucide icons (AlertCircle, XCircle, etc.)
+    - _Requirements: 11.6_
+  - [ ] 21.2 Add error handling to server actions
+    - Wrap database operations in try-catch
+    - Return structured error responses
+    - Log errors to console
+    - Display errors using shadcn/ui Alert or toast notifications
+    - _Requirements: 11.2, 11.5_
+  - [ ] 21.3 Write property test for database error handling
+    - **Property 28: Database Error Handling**
+    - **Validates: Requirements 11.2**
+    - Simulate database failures
+    - Verify errors are caught and displayed
+  - [ ] 21.4 Write property test for error logging
+    - **Property 29: Error Logging**
+    - **Validates: Requirements 11.5**
+    - Trigger various errors
+    - Verify errors are logged to console
+
+- [ ] 22. Implement semester ordering
+  - [ ] 22.1 Add ordering logic to semester queries
+    - Sort semesters by creation date or name
+    - Display in chronological order on dashboard
+    - _Requirements: 6.5_
+  - [ ] 22.2 Write property test for semester ordering
+    - **Property 20: Semester Chronological Ordering**
+    - **Validates: Requirements 6.5**
+    - Create semesters in random order
+    - Verify dashboard displays them chronologically
+
+- [ ] 23. Polish UI and apply design guidelines
+  - [ ] 23.1 Apply blue color scheme throughout
+    - Define Tailwind color palette in config
+    - Apply colors to all shadcn/ui components
+    - Ensure consistent theming across all pages
+    - _Requirements: 10.1_
+  - [ ] 23.2 Implement responsive design
+    - Test all pages on mobile, tablet, desktop
+    - Adjust layouts for different screen sizes
+    - Ensure shadcn/ui Tables are scrollable on mobile
+    - Test shadcn/ui Dialog and Sheet components on mobile
+    - MUST follow design guidelines from loaded skills
+    - _Requirements: 10.6_
+  - [ ] 23.3 Add loading states and transitions
+    - Add loading spinners using shadcn/ui Skeleton components
+    - Add smooth transitions for UI changes
+    - Implement skeleton loaders for data fetching
+    - Use Lucide icons (Loader2 with animation)
+    - _Requirements: 10.8_
+  - [ ] 23.4 Improve typography and spacing
+    - Apply consistent font sizes and weights
+    - Ensure proper spacing between elements
+    - Improve readability
+    - Follow shadcn/ui typography guidelines
+    - MUST follow design guidelines from loaded skills
+    - _Requirements: 10.7_
+
+- [ ] 24. Final checkpoint and testing
+  - Run all unit tests and property tests
+  - Test complete user flows end-to-end
+  - Verify all requirements are met
+  - Test on different browsers and devices
+  - Ask the user if questions arise
+
+- [ ] 25. Deployment preparation
+  - [ ] 25.1 Set up environment variables
+    - Configure DATABASE_URL for NeonDB
+    - Configure Better Auth secrets
+    - Set up production environment variables
+  - [ ] 25.2 Optimize for production
+    - Run production build and check for errors
+    - Optimize images and assets
+    - Configure caching strategies
+    - Set up error monitoring (optional)
+
+## Notes
+
+- **CRITICAL**: Task 1 (Install and load design skills) MUST be completed first before any UI/UX work
+- **CRITICAL**: Task 2 includes installing shadcn/ui and Lucide React - these MUST be set up before building any UI components
+- All UI components MUST use shadcn/ui library (Button, Input, Card, Table, Dialog, Form, Alert, Badge, Select, etc.)
+- All icons MUST use Lucide React icon library
+- All design-related tasks MUST use the loaded skills to ensure professional, unique, attractive design
+- NO "AI slop" design - follow web-design-guidelines, frontend-design, vercel-react-best-practices, and ui-ux-pro-max
+- All tasks are required for comprehensive implementation with full test coverage
+- Each task references specific requirements for traceability
+- Checkpoints ensure incremental validation
+- Property tests validate universal correctness properties
+- Unit tests validate specific examples and edge cases
+- The implementation follows a bottom-up approach: core logic → data layer → authentication → UI → integration
+- All 31 correctness properties from the design document are covered by property tests
