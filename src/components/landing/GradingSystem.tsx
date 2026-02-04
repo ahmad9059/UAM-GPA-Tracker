@@ -36,25 +36,25 @@ export function GradingSystem() {
           {/* Content Grid */}
           <div className="grid lg:grid-cols-2 gap-6">
             {/* Grade Criteria Card */}
-            <div className="glass-card rounded-xl p-8 shadow-soft">
-              <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
+            <div className="glass-card rounded-xl p-6 lg:p-8 shadow-soft h-fit">
+              <h3 className="text-xl font-bold text-foreground mb-5 flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-primary" />
                 Grade Criteria
               </h3>
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {grades.map((item) => (
                   <div
                     key={item.grade}
-                    className="flex items-center gap-4 p-3 rounded-lg hover:bg-accent/50 transition-colors"
+                    className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-accent/50 transition-colors"
                   >
                     <div
-                      className={`w-11 h-11 ${item.bg} rounded-lg flex items-center justify-center font-bold text-lg ${item.color}`}
+                      className={`w-11 h-11 ${item.bg} rounded-lg flex items-center justify-center font-bold text-lg ${item.color} shrink-0`}
                     >
                       {item.grade}
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <CheckCircle className={`h-4 w-4 ${item.color}`} />
+                        <CheckCircle className={`h-4 w-4 ${item.color} shrink-0`} />
                         <span className="font-semibold text-foreground">
                           {item.range}
                         </span>
@@ -69,17 +69,17 @@ export function GradingSystem() {
             </div>
 
             {/* Formula Card */}
-            <div className="space-y-6">
-              <div className="glass-card rounded-xl p-8 shadow-soft">
-                <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
+            <div className="space-y-5">
+              <div className="glass-card rounded-xl p-6 lg:p-8 shadow-soft">
+                <h3 className="text-xl font-bold text-foreground mb-5 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-primary" />
                   GPA Formula
                 </h3>
-                <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-lg p-6 mb-6">
+                <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-lg p-5 mb-5">
                   <code className="text-lg font-mono text-foreground block text-center">
                     GPA = Σ(QP × CH) / Σ(CH)
                   </code>
-                  <div className="text-center mt-4 space-y-1">
+                  <div className="text-center mt-3 space-y-0.5">
                     <p className="text-sm text-muted-foreground">
                       <span className="font-medium">QP</span> = Quality Points
                     </p>
@@ -88,7 +88,7 @@ export function GradingSystem() {
                     </p>
                   </div>
                 </div>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed text-[15px]">
                   The system supports courses with total marks of{" "}
                   <span className="font-semibold text-foreground">
                     20, 40, 60, 80, or 100
@@ -99,16 +99,16 @@ export function GradingSystem() {
               </div>
 
               {/* Mark Types */}
-              <div className="glass-card rounded-xl p-8 shadow-soft">
+              <div className="glass-card rounded-xl p-6 lg:p-8 shadow-soft">
                 <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-primary" />
                   Supported Mark Types
                 </h3>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2.5">
                   {["20", "40", "60", "80", "100"].map((mark) => (
                     <div
                       key={mark}
-                      className="px-5 py-3 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg text-center"
+                      className="px-4 py-2.5 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg text-center"
                     >
                       <span className="text-lg font-bold text-primary">
                         {mark}
