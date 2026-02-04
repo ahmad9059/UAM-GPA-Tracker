@@ -26,13 +26,13 @@ export function Hero() {
       {/* Subtle mesh pattern overlay */}
       <div className="absolute inset-0 mesh-pattern opacity-30" />
 
-      <div className="container mx-auto px-4 pt-28 lg:pt-36 pb-24 relative">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div className="container mx-auto px-4 pt-32 lg:pt-40 pb-20 relative min-h-[calc(100vh-5rem)] flex items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center w-full">
           {/* Left Content */}
           <div className="space-y-8">
             {/* Badge */}
             <div className="animate-fade-in-up inline-flex items-center gap-2.5 glass-premium px-4 py-2.5 rounded-full">
-              <div className="flex items-center justify-center w-6 h-6 bg-gradient-to-br from-primary/30 to-violet-500/20 rounded-full">
+              <div className="flex items-center justify-center w-6 h-6 bg-gradient-to-br from-primary/30 to-primary/20 rounded-full">
                 <Sparkles className="h-3.5 w-3.5 text-primary" />
               </div>
               <span className="text-sm font-medium text-foreground tracking-tight">
@@ -176,7 +176,7 @@ export function Hero() {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground animate-fade-in-up-delay-5">
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground animate-fade-in-up-delay-5">
           <span className="text-xs font-medium tracking-wide uppercase">
             Scroll to explore
           </span>
