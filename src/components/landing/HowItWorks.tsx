@@ -89,14 +89,14 @@ export function HowItWorks() {
                 </div>
 
                 {/* Step Number & Icon */}
-                <div className="relative flex flex-col items-center shrink-0 order-first md:order-none">
+                <div className="relative flex flex-col items-center shrink-0 order-first md:order-none gap-3">
                   {/* Step number badge */}
-                  <div className="absolute -top-3 text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-md">
+                  <div className="text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full whitespace-nowrap">
                     Step {index + 1}
                   </div>
                   
                   {/* Icon circle */}
-                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-soft glow-primary">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-soft glow-primary relative z-10">
                     <step.icon className="h-8 w-8 text-white" />
                   </div>
                 </div>

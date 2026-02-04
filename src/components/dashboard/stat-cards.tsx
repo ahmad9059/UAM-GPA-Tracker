@@ -30,51 +30,51 @@ export function StatCards({
   const stats = [
     {
       icon: Award,
-      iconBg: "bg-blue-50",
-      iconColor: "text-blue-600",
+      iconBg: "from-primary/20 to-primary/10",
+      iconColor: "text-primary",
       value: cgpa.toFixed(2),
       change: gpaStatus.label,
       changeColor: gpaStatus.color,
       label: "Cumulative GPA",
       sublabel: "Progress",
       progress: gpaProgress,
-      progressColor: "bg-blue-600",
+      progressColor: "bg-gradient-to-r from-primary to-primary/80",
     },
     {
       icon: Clock,
-      iconBg: "bg-emerald-50",
-      iconColor: "text-emerald-600",
+      iconBg: "from-chart-2/20 to-chart-2/10",
+      iconColor: "text-chart-2",
       value: totalCreditHours.toString(),
       change: "+15% this sem",
-      changeColor: "text-emerald-600",
+      changeColor: "text-chart-2",
       label: "Credit Hours",
       sublabel: "Completed",
       progress: creditProgress,
-      progressColor: "bg-emerald-600",
+      progressColor: "bg-gradient-to-r from-chart-2 to-chart-2/80",
     },
     {
       icon: TrendingUp,
-      iconBg: "bg-violet-50",
-      iconColor: "text-violet-600",
+      iconBg: "from-chart-3/20 to-chart-3/10",
+      iconColor: "text-chart-3",
       value: totalQualityPoints.toFixed(1),
       change: "Total Earned",
-      changeColor: "text-violet-600",
+      changeColor: "text-chart-3",
       label: "Quality Points",
       sublabel: "Accumulated",
       progress: Math.min((totalQualityPoints / 520) * 100, 100),
-      progressColor: "bg-violet-600",
+      progressColor: "bg-gradient-to-r from-chart-3 to-chart-3/80",
     },
     {
       icon: BookOpen,
-      iconBg: "bg-amber-50",
-      iconColor: "text-amber-600",
+      iconBg: "from-chart-4/20 to-chart-4/10",
+      iconColor: "text-chart-4",
       value: semesterCount.toString(),
       change: `${semesterCount}/8 semesters`,
-      changeColor: "text-amber-600",
+      changeColor: "text-chart-4",
       label: "Semesters",
       sublabel: "Completion",
       progress: semesterProgress,
-      progressColor: "bg-amber-600",
+      progressColor: "bg-gradient-to-r from-chart-4 to-chart-4/80",
     },
   ];
 
@@ -83,28 +83,33 @@ export function StatCards({
       {stats.map((stat, index) => (
         <div
           key={index}
-          className="bg-white rounded-xl p-5 shadow-sm border border-slate-100"
+          className="glass-card-elevated rounded-2xl p-6 group hover:shadow-elevated transition-all duration-300 hover:scale-[1.02] relative overflow-hidden"
         >
-          <div className="flex items-start justify-between mb-4">
-            <div className={`w-12 h-12 ${stat.iconBg} rounded-xl flex items-center justify-center`}>
-              <stat.icon className={`h-6 w-6 ${stat.iconColor}`} />
+          {/* Glow effect on hover */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+          
+          <div className="relative">
+            <div className="flex items-start justify-between mb-4">
+              <div className={`w-14 h-14 bg-gradient-to-br ${stat.iconBg} rounded-xl flex items-center justify-center border border-${stat.iconColor}/10 shadow-soft group-hover:shadow-medium transition-shadow`}>
+                <stat.icon className={`h-7 w-7 ${stat.iconColor}`} />
+              </div>
+              <div className="text-right">
+                <span className="text-3xl font-bold gradient-text">{stat.value}</span>
+                <p className={`text-xs font-semibold ${stat.changeColor} mt-1`}>{stat.change}</p>
+              </div>
             </div>
-            <div className="text-right">
-              <span className="text-2xl font-bold text-slate-900">{stat.value}</span>
-              <p className={`text-xs font-medium ${stat.changeColor}`}>{stat.change}</p>
-            </div>
-          </div>
-          <div>
-            <p className="text-sm font-medium text-slate-900 mb-2">{stat.label}</p>
-            <div className="flex items-center justify-between text-xs text-slate-500 mb-1.5">
-              <span>{stat.sublabel}</span>
-              <span>{stat.progress.toFixed(0)}%</span>
-            </div>
-            <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-              <div
-                className={`h-full ${stat.progressColor} rounded-full transition-all duration-500`}
-                style={{ width: `${stat.progress}%` }}
-              />
+            <div>
+              <p className="text-sm font-semibold text-foreground mb-3">{stat.label}</p>
+              <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
+                <span className="font-medium">{stat.sublabel}</span>
+                <span className="font-bold">{stat.progress.toFixed(0)}%</span>
+              </div>
+              <div className="h-2 bg-muted/50 rounded-full overflow-hidden">
+                <div
+                  className={`h-full ${stat.progressColor} rounded-full transition-all duration-700 shadow-sm`}
+                  style={{ width: `${stat.progress}%` }}
+                />
+              </div>
             </div>
           </div>
         </div>

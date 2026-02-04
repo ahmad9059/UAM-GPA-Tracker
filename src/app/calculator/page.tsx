@@ -7,11 +7,10 @@ import {
   Plus,
   Trash2,
   Calculator,
-  GraduationCap,
-  ArrowLeft,
   TrendingUp,
   BookOpen,
 } from "lucide-react";
+import { Navbar, Footer } from "@/components/landing";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -123,69 +122,54 @@ export default function CalculatorPage() {
   const getGradeColor = (grade: string) => {
     switch (grade) {
       case "A":
-        return "bg-green-100 text-green-800 border-green-200";
+        return "bg-emerald-500/10 text-emerald-500";
       case "B":
-        return "bg-blue-100 text-blue-800 border-blue-200";
+        return "bg-blue-500/10 text-blue-500";
       case "C":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200";
+        return "bg-amber-500/10 text-amber-500";
       case "D":
-        return "bg-orange-100 text-orange-800 border-orange-200";
+        return "bg-orange-500/10 text-orange-500";
       default:
-        return "bg-red-100 text-red-800 border-red-200";
+        return "bg-red-500/10 text-red-500";
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 text-primary hover:opacity-80 transition-opacity">
-            <GraduationCap className="h-8 w-8" />
-            <span className="text-xl font-bold">GPA Tracker</span>
-          </Link>
-          <div className="flex gap-3">
-            <Button variant="ghost" asChild>
-              <Link href="/">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Home
-              </Link>
-            </Button>
-            <Button asChild>
-              <Link href="/login">Sign In</Link>
-            </Button>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-white">
+      <Navbar />
 
-      <main className="container mx-auto px-4 py-8 max-w-5xl">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">
+      <main className="container mx-auto px-4 pt-28 pb-16 max-w-5xl">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 bg-primary/5 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <Calculator className="h-4 w-4" />
+            Quick Calculator
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
             GPA Calculator
           </h1>
-          <p className="text-muted-foreground">
-            Calculate your semester GPA using MNS-University&apos;s grading system
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Calculate your semester GPA using MNS-University&apos;s official grading system
           </p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Course Input Section */}
           <div className="lg:col-span-2 space-y-4">
-            <Card>
+            <Card className="glass-card shadow-soft border-border/50">
               <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2">
-                  <BookOpen className="h-5 w-5" />
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <BookOpen className="h-5 w-5 text-primary" />
                   Enter Your Courses
                 </CardTitle>
                 <CardDescription>
                   Add courses and enter marks to calculate your GPA
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3">
                 {courses.map((course, index) => (
                   <div
                     key={course.id}
-                    className="grid grid-cols-12 gap-3 items-start p-4 bg-muted/30 rounded-lg"
+                    className="grid grid-cols-12 gap-3 items-start p-4 bg-accent/50 rounded-lg border border-border/50"
                   >
                     <div className="col-span-12 sm:col-span-1 flex items-center justify-center">
                       <span className="text-sm font-medium text-muted-foreground">
@@ -274,7 +258,7 @@ export default function CalculatorPage() {
                   </div>
                 ))}
 
-                <Button variant="outline" onClick={addCourse} className="w-full">
+                <Button variant="outline" onClick={addCourse} className="w-full font-semibold">
                   <Plus className="h-4 w-4 mr-2" />
                   Add Course
                 </Button>
@@ -284,10 +268,10 @@ export default function CalculatorPage() {
 
           {/* Results Section */}
           <div className="space-y-4">
-            <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10">
+            <Card className="glass-card border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10 shadow-soft">
               <CardHeader className="pb-2">
-                <CardTitle className="flex items-center gap-2">
-                  <Calculator className="h-5 w-5" />
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <Calculator className="h-5 w-5 text-primary" />
                   Your GPA
                 </CardTitle>
               </CardHeader>
@@ -314,10 +298,10 @@ export default function CalculatorPage() {
             </Card>
 
             {result.courses.length > 0 && (
-              <Card>
+              <Card className="glass-card shadow-soft border-border/50">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base flex items-center gap-2">
-                    <TrendingUp className="h-4 w-4" />
+                    <TrendingUp className="h-4 w-4 text-primary" />
                     Breakdown
                   </CardTitle>
                 </CardHeader>
@@ -326,7 +310,7 @@ export default function CalculatorPage() {
                     {result.courses.map((course, index) => (
                       <div
                         key={index}
-                        className="flex items-center justify-between p-2 bg-muted/30 rounded"
+                        className="flex items-center justify-between p-2.5 bg-accent/50 rounded-lg border border-border/50"
                       >
                         <div className="flex items-center gap-2">
                           <span className="text-sm text-muted-foreground">
@@ -351,15 +335,16 @@ export default function CalculatorPage() {
               </Card>
             )}
 
-            <Alert>
-              <AlertDescription className="text-sm">
-                <strong>Note:</strong> This calculator uses MNS-University&apos;s
-                grading system. Sign in to save your courses and track your CGPA
-                over time.
-              </AlertDescription>
-            </Alert>
+            <Card className="glass-card shadow-soft border-primary/20 bg-primary/5">
+              <CardContent className="pt-6">
+                <p className="text-sm text-foreground leading-relaxed">
+                  <strong className="text-primary">Note:</strong> This calculator uses MNS-University&apos;s
+                  grading system. Sign in to save your courses and track your CGPA over time.
+                </p>
+              </CardContent>
+            </Card>
 
-            <Button asChild className="w-full">
+            <Button asChild className="w-full font-semibold shadow-soft hover:shadow-medium transition-shadow">
               <Link href="/register">
                 Save Your Progress
               </Link>
@@ -368,9 +353,9 @@ export default function CalculatorPage() {
         </div>
 
         {/* Grade Reference Table */}
-        <Card className="mt-8">
+        <Card className="mt-12 glass-card shadow-soft border-border/50">
           <CardHeader>
-            <CardTitle>Grade Reference</CardTitle>
+            <CardTitle className="text-xl">Grade Reference</CardTitle>
             <CardDescription>
               MNS-University grading criteria based on percentage
             </CardDescription>
@@ -379,58 +364,59 @@ export default function CalculatorPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Grade</TableHead>
-                  <TableHead>Percentage Range</TableHead>
-                  <TableHead>Quality Points</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead className="font-semibold">Grade</TableHead>
+                  <TableHead className="font-semibold">Percentage Range</TableHead>
+                  <TableHead className="font-semibold">Quality Points</TableHead>
+                  <TableHead className="font-semibold">Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 <TableRow>
                   <TableCell>
-                    <Badge className="bg-green-100 text-green-800 border-green-200">A</Badge>
+                    <Badge variant="outline" className="bg-emerald-500/10 text-emerald-500 font-bold">A</Badge>
                   </TableCell>
-                  <TableCell>80% - 100%</TableCell>
-                  <TableCell>4.00</TableCell>
-                  <TableCell>Excellent</TableCell>
+                  <TableCell className="font-medium">80% - 100%</TableCell>
+                  <TableCell className="font-medium">4.00</TableCell>
+                  <TableCell className="text-muted-foreground">Excellent</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>
-                    <Badge className="bg-blue-100 text-blue-800 border-blue-200">B</Badge>
+                    <Badge variant="outline" className="bg-blue-500/10 text-blue-500 font-bold">B</Badge>
                   </TableCell>
-                  <TableCell>65% - 79%</TableCell>
-                  <TableCell>3.00 - 3.70</TableCell>
-                  <TableCell>Good</TableCell>
+                  <TableCell className="font-medium">65% - 79%</TableCell>
+                  <TableCell className="font-medium">3.00 - 3.70</TableCell>
+                  <TableCell className="text-muted-foreground">Good</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>
-                    <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">C</Badge>
+                    <Badge variant="outline" className="bg-amber-500/10 text-amber-500 font-bold">C</Badge>
                   </TableCell>
-                  <TableCell>50% - 64%</TableCell>
-                  <TableCell>2.00 - 2.70</TableCell>
-                  <TableCell>Average</TableCell>
+                  <TableCell className="font-medium">50% - 64%</TableCell>
+                  <TableCell className="font-medium">2.00 - 2.70</TableCell>
+                  <TableCell className="text-muted-foreground">Average</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>
-                    <Badge className="bg-orange-100 text-orange-800 border-orange-200">D</Badge>
+                    <Badge variant="outline" className="bg-orange-500/10 text-orange-500 font-bold">D</Badge>
                   </TableCell>
-                  <TableCell>40% - 49%</TableCell>
-                  <TableCell>1.00 - 1.50</TableCell>
-                  <TableCell>Pass</TableCell>
+                  <TableCell className="font-medium">40% - 49%</TableCell>
+                  <TableCell className="font-medium">1.00 - 1.50</TableCell>
+                  <TableCell className="text-muted-foreground">Pass</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>
-                    <Badge className="bg-red-100 text-red-800 border-red-200">F</Badge>
+                    <Badge variant="outline" className="bg-red-500/10 text-red-500 font-bold">F</Badge>
                   </TableCell>
-                  <TableCell>Below 40%</TableCell>
-                  <TableCell>0.00</TableCell>
-                  <TableCell>Fail</TableCell>
+                  <TableCell className="font-medium">Below 40%</TableCell>
+                  <TableCell className="font-medium">0.00</TableCell>
+                  <TableCell className="text-muted-foreground">Fail</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </CardContent>
         </Card>
       </main>
+      <Footer />
     </div>
   );
 }

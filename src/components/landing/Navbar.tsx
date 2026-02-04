@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { GraduationCap, Menu, X } from "lucide-react";
+import Image from "next/image";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
@@ -10,15 +11,21 @@ export function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
-      <div className="mx-4 mt-4">
-        <nav className="glass-strong rounded-xl max-w-7xl mx-auto">
+      <div className="container mx-auto px-4 pt-4">
+        <nav className="glass-strong rounded-xl shadow-soft">
           <div className="px-6 py-4 flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative">
                 <div className="absolute inset-0 bg-primary/20 rounded-lg blur-lg group-hover:bg-primary/30 transition-all" />
                 <div className="relative bg-gradient-to-br from-primary to-primary/80 p-2 rounded-lg">
-                  <GraduationCap className="h-6 w-6 text-white" />
+                  <Image 
+                    src="/icon.svg" 
+                    alt="MNS University Logo" 
+                    width={24} 
+                    height={24}
+                    className="brightness-0 invert"
+                  />
                 </div>
               </div>
               <div className="flex flex-col">
@@ -58,7 +65,10 @@ export function Navbar() {
               <Button variant="ghost" asChild className="font-medium">
                 <Link href="/login">Sign In</Link>
               </Button>
-              <Button asChild className="font-semibold shadow-soft hover:shadow-medium transition-shadow">
+              <Button
+                asChild
+                className="font-semibold shadow-soft hover:shadow-medium transition-shadow"
+              >
                 <Link href="/register">Get Started</Link>
               </Button>
             </div>

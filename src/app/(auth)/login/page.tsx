@@ -5,7 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, Lock, LogIn, Loader2, GraduationCap } from "lucide-react";
+import { Mail, Lock, LogIn, Loader2 } from "lucide-react";
+import { Navbar } from "@/components/landing";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -59,7 +60,7 @@ function LoginForm() {
   }
 
   return (
-    <Card className="border-0 shadow-xl">
+    <Card className="glass-card shadow-xl border-border/50">
       <CardHeader className="space-y-1 text-center">
         <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
         <CardDescription>
@@ -158,7 +159,7 @@ function LoginForm() {
 
 function LoginFormSkeleton() {
   return (
-    <Card className="border-0 shadow-xl">
+    <Card className="glass-card shadow-xl border-border/50">
       <CardHeader className="space-y-1 text-center">
         <Skeleton className="h-8 w-40 mx-auto" />
         <Skeleton className="h-4 w-56 mx-auto" />
@@ -180,18 +181,14 @@ function LoginFormSkeleton() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-50 px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="flex justify-center mb-8">
-          <Link href="/" className="flex items-center gap-2 text-primary hover:opacity-80 transition-opacity">
-            <GraduationCap className="h-10 w-10" />
-            <span className="text-2xl font-bold">GPA Tracker</span>
-          </Link>
+    <div className="min-h-screen bg-white flex flex-col">
+      <Navbar />
+      <div className="flex-1 flex items-center justify-center px-4 py-12">
+        <div className="w-full max-w-md">
+          <Suspense fallback={<LoginFormSkeleton />}>
+            <LoginForm />
+          </Suspense>
         </div>
-
-        <Suspense fallback={<LoginFormSkeleton />}>
-          <LoginForm />
-        </Suspense>
       </div>
     </div>
   );

@@ -55,7 +55,7 @@ export function CreateSemesterDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" className="h-9 bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
+        <Button size="sm" className="h-10 bg-gradient-to-r from-primary to-primary/90 hover:shadow-medium transition-all duration-300 text-white shadow-soft rounded-xl font-semibold">
           <Plus className="h-4 w-4 mr-1.5" />
           Add Semester
         </Button>
@@ -63,8 +63,8 @@ export function CreateSemesterDialog() {
       <DialogContent className="sm:max-w-md">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle className="text-lg font-semibold text-slate-900">Create New Semester</DialogTitle>
-            <DialogDescription className="text-sm text-slate-500">
+            <DialogTitle className="text-xl font-bold text-foreground">Create New Semester</DialogTitle>
+            <DialogDescription className="text-sm text-muted-foreground">
               Add a new semester to track your courses and GPA.
             </DialogDescription>
           </DialogHeader>
@@ -76,7 +76,7 @@ export function CreateSemesterDialog() {
           )}
 
           <div className="py-4">
-            <Label htmlFor="name" className="text-sm font-medium text-slate-700">
+            <Label htmlFor="name" className="text-sm font-semibold text-foreground">
               Semester Name
             </Label>
             <Input
@@ -88,7 +88,7 @@ export function CreateSemesterDialog() {
               disabled={isLoading}
               autoFocus
             />
-            <p className="text-xs text-slate-500 mt-2">
+            <p className="text-xs text-muted-foreground mt-2">
               Use a descriptive name like &quot;Fall 2024&quot; or &quot;Spring 2025&quot;
             </p>
           </div>
@@ -100,6 +100,7 @@ export function CreateSemesterDialog() {
               onClick={() => setOpen(false)}
               disabled={isLoading}
               size="sm"
+              className="rounded-xl"
             >
               Cancel
             </Button>
@@ -107,7 +108,7 @@ export function CreateSemesterDialog() {
               type="submit"
               disabled={isLoading || !name.trim()}
               size="sm"
-              className="bg-blue-600 hover:bg-blue-700"
+              className="bg-gradient-to-r from-primary to-primary/90 hover:shadow-medium transition-all duration-300 rounded-xl"
             >
               {isLoading ? (
                 <>

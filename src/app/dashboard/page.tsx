@@ -26,20 +26,20 @@ export default async function DashboardPage() {
   const { semesters, cgpa, totalCreditHours, totalQualityPoints } = result.data;
 
   const getGPAColor = (gpa: number) => {
-    if (gpa >= 3.5) return "bg-emerald-50 text-emerald-700";
-    if (gpa >= 3.0) return "bg-blue-50 text-blue-700";
-    if (gpa >= 2.5) return "bg-amber-50 text-amber-700";
-    if (gpa >= 2.0) return "bg-orange-50 text-orange-700";
-    return "bg-red-50 text-red-700";
+    if (gpa >= 3.5) return "bg-gradient-to-br from-chart-2/20 to-chart-2/10 text-chart-2 border border-chart-2/20";
+    if (gpa >= 3.0) return "bg-gradient-to-br from-primary/20 to-primary/10 text-primary border border-primary/20";
+    if (gpa >= 2.5) return "bg-gradient-to-br from-chart-4/20 to-chart-4/10 text-chart-4 border border-chart-4/20";
+    if (gpa >= 2.0) return "bg-gradient-to-br from-chart-5/20 to-chart-5/10 text-chart-5 border border-chart-5/20";
+    return "bg-gradient-to-br from-destructive/20 to-destructive/10 text-destructive border border-destructive/20";
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold text-slate-900">Dashboard</h1>
-          <p className="text-sm text-slate-500 mt-0.5">
+          <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
+          <p className="text-base text-muted-foreground mt-1.5">
             Welcome back! Track your academic progress.
           </p>
         </div>
@@ -57,8 +57,8 @@ export default async function DashboardPage() {
       {/* Charts Section */}
       {semesters.length > 0 && (
         <div>
-          <h2 className="text-base font-semibold text-slate-900 mb-4">Analytics Overview</h2>
-          <div className="grid lg:grid-cols-2 gap-4">
+          <h2 className="text-xl font-bold text-foreground mb-5">Analytics Overview</h2>
+          <div className="grid lg:grid-cols-2 gap-6">
             <GPAChart semesters={semesters} type="bar" />
             <GPAChart semesters={semesters} type="line" />
           </div>
@@ -67,76 +67,79 @@ export default async function DashboardPage() {
 
       {/* Semesters List */}
       <div>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-base font-semibold text-slate-900">Your Semesters</h2>
+        <div className="flex items-center justify-between mb-5">
+          <h2 className="text-xl font-bold text-foreground">Your Semesters</h2>
           {semesters.length > 0 && (
-            <Link href="#" className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1">
+            <Link href="#" className="text-sm text-primary hover:text-primary/80 font-semibold flex items-center gap-1 transition-colors">
               View all <ChevronRight className="h-4 w-4" />
             </Link>
           )}
         </div>
 
         {semesters.length === 0 ? (
-          <div className="bg-white rounded-xl border border-dashed border-slate-200 p-12">
-            <div className="flex flex-col items-center justify-center text-center">
-              <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mb-4">
-                <BookOpen className="h-6 w-6 text-slate-400" />
+          <div className="glass-card-elevated rounded-2xl border-2 border-dashed border-primary/20 p-16 text-center">
+            <div className="flex flex-col items-center justify-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center mb-5 shadow-soft">
+                <BookOpen className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-base font-semibold text-slate-900 mb-1">No Semesters Yet</h3>
-              <p className="text-sm text-slate-500 mb-6 max-w-sm">
+              <h3 className="text-xl font-bold text-foreground mb-2">No Semesters Yet</h3>
+              <p className="text-base text-muted-foreground mb-8 max-w-md">
                 Start tracking your academic progress by creating your first semester.
               </p>
               <CreateSemesterDialog />
             </div>
           </div>
         ) : (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {semesters.map((semester, index) => (
               <div
                 key={semester.id}
-                className="bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow"
+                className="glass-card-elevated rounded-2xl group hover:shadow-elevated transition-all duration-300 hover:scale-[1.02] relative overflow-hidden"
               >
-                <div className="p-5">
+                {/* Glow effect on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                
+                <div className="p-6 relative">
                   {/* Header */}
-                  <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-start justify-between mb-5">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 font-semibold text-sm">
+                      <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center text-primary font-bold text-base border border-primary/10 shadow-soft">
                         {index + 1}
                       </div>
                       <div>
-                        <h3 className="font-semibold text-slate-900">{semester.name}</h3>
-                        <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
-                          <Calendar className="h-3 w-3" />
+                        <h3 className="font-bold text-foreground text-base">{semester.name}</h3>
+                        <p className="text-xs text-muted-foreground flex items-center gap-1.5 mt-1">
+                          <Calendar className="h-3.5 w-3.5" />
                           {semester.courseCount || semester.courses.length} courses
                         </p>
                       </div>
                     </div>
-                    <span className={`px-2.5 py-1 rounded-lg text-xs font-semibold ${getGPAColor(semester.gpa)}`}>
+                    <span className={`px-3 py-1.5 rounded-xl text-xs font-bold ${getGPAColor(semester.gpa)} shadow-soft`}>
                       {semester.gpa.toFixed(2)}
                     </span>
                   </div>
 
                   {/* Stats */}
-                  <div className="grid grid-cols-2 gap-4 py-3 border-y border-slate-100">
+                  <div className="grid grid-cols-2 gap-4 py-4 border-y border-border">
                     <div>
-                      <p className="text-xs text-slate-500 mb-0.5">Credit Hours</p>
-                      <p className="text-sm font-semibold text-slate-900">{semester.totalCreditHours}</p>
+                      <p className="text-xs text-muted-foreground font-medium mb-1">Credit Hours</p>
+                      <p className="text-base font-bold text-foreground">{semester.totalCreditHours}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-slate-500 mb-0.5">Quality Points</p>
-                      <p className="text-sm font-semibold text-slate-900">{semester.totalQualityPoints.toFixed(1)}</p>
+                      <p className="text-xs text-muted-foreground font-medium mb-1">Quality Points</p>
+                      <p className="text-base font-bold text-foreground">{semester.totalQualityPoints.toFixed(1)}</p>
                     </div>
                   </div>
 
                   {/* GPA Progress Bar */}
-                  <div className="mt-3 mb-4">
-                    <div className="flex items-center justify-between text-xs mb-1">
-                      <span className="text-slate-500">GPA Progress</span>
-                      <span className="font-medium text-slate-700">{((semester.gpa / 4) * 100).toFixed(0)}%</span>
+                  <div className="mt-4 mb-5">
+                    <div className="flex items-center justify-between text-xs mb-2">
+                      <span className="text-muted-foreground font-medium">GPA Progress</span>
+                      <span className="font-bold gradient-text">{((semester.gpa / 4) * 100).toFixed(0)}%</span>
                     </div>
-                    <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-2 bg-muted/50 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-blue-600 rounded-full transition-all duration-500"
+                        className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full transition-all duration-700 shadow-sm"
                         style={{ width: `${(semester.gpa / 4) * 100}%` }}
                       />
                     </div>
@@ -148,11 +151,11 @@ export default async function DashboardPage() {
                       asChild
                       variant="outline"
                       size="sm"
-                      className="flex-1 text-xs h-9"
+                      className="flex-1 text-xs h-10 font-semibold rounded-xl hover:bg-primary/5 border-border/60 transition-all duration-300"
                     >
                       <Link href={`/dashboard/semester/${semester.id}`}>
                         View Details
-                        <ChevronRight className="h-3.5 w-3.5 ml-1" />
+                        <ChevronRight className="h-4 w-4 ml-1" />
                       </Link>
                     </Button>
                     <DeleteSemesterButton semesterId={semester.id} semesterName={semester.name} />

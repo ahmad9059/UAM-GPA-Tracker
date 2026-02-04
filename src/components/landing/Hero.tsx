@@ -31,11 +31,11 @@ export function Hero() {
           {/* Left Content */}
           <div className="space-y-8">
             {/* Badge */}
-            <div className="animate-fade-in-up inline-flex items-center gap-2.5 glass-premium px-4 py-2.5 rounded-full">
-              <div className="flex items-center justify-center w-6 h-6 bg-gradient-to-br from-primary/30 to-primary/20 rounded-full">
-                <Sparkles className="h-3.5 w-3.5 text-primary" />
+            <div className="animate-fade-in-up inline-flex items-center gap-2.5 glass-premium px-5 py-3 rounded-full shadow-soft hover:shadow-medium transition-shadow">
+              <div className="flex items-center justify-center w-7 h-7 bg-gradient-to-br from-primary/30 to-primary/20 rounded-full">
+                <Sparkles className="h-4 w-4 text-primary" />
               </div>
-              <span className="text-sm font-medium text-foreground tracking-tight">
+              <span className="text-sm font-semibold text-foreground tracking-tight">
                 Built for MNS-University Students
               </span>
             </div>
@@ -61,18 +61,18 @@ export function Hero() {
               <Button
                 size="lg"
                 asChild
-                className="text-lg px-8 h-14 rounded-xl font-semibold glow-pulse hover:scale-[1.02] transition-all duration-300 group bg-gradient-to-r from-primary to-primary/90"
+                className="text-base px-7 h-12 rounded-xl font-semibold shadow-medium hover:shadow-elevated hover:scale-[1.02] transition-all duration-300 group bg-gradient-to-r from-primary to-primary/90"
               >
                 <Link href="/register">
                   Start Tracking
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1.5 transition-transform duration-300" />
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Link>
               </Button>
               <Button
                 size="lg"
                 variant="outline"
                 asChild
-                className="text-lg px-8 h-14 rounded-xl font-semibold glass-premium hover:bg-white/95 hover:shadow-medium transition-all duration-300"
+                className="text-base px-7 h-12 rounded-xl font-semibold glass-premium hover:bg-white/95 shadow-soft hover:shadow-medium transition-all duration-300 border-border/60"
               >
                 <Link href="/calculator">
                   <Calculator className="mr-2 h-5 w-5" />
