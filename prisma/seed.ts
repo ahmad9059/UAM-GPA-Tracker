@@ -15,19 +15,8 @@ type SeedSemester = {
   courses: SeedCourse[];
 };
 
-// Normalize courses so totalMarks always matches creditHours * 20
 function normalizeCourse(course: SeedCourse): SeedCourse {
-  // Audit / pass courses: keep credit hours 0, ignore marks, mark as audit
-  if (course.isAudit || course.creditHours === 0) {
-    return {
-      ...course,
-      creditHours: 0,
-      isAudit: true,
-      totalMarks: course.totalMarks || 20,
-      obtainedMarks: 0,
-    };
-  }
-
+  // Normalize totals to the standard scale (creditHours * 20) so they align with the quality-point table
   const targetTotal = course.creditHours * 20;
   const sourceTotal = course.totalMarks || targetTotal;
   const scaledObtained = Math.round((course.obtainedMarks / sourceTotal) * targetTotal);
@@ -48,8 +37,8 @@ const semesters: SeedSemester[] = [
       { name: "Applied Physics", creditHours: 3, totalMarks: 60, obtainedMarks: 43 },
       { name: "Ideology & Constitution of Pakistan", creditHours: 2, totalMarks: 40, obtainedMarks: 23 },
       { name: "Functional English", creditHours: 3, totalMarks: 60, obtainedMarks: 34 },
-      // Pass/Non-GPA course (exclude from GPA by setting creditHours to 0)
-      { name: "Social & Religious Tolerance (Pass/Non-GPA)", creditHours: 0, totalMarks: 40, obtainedMarks: 23, isAudit: true },
+      // Pass/Non-GPA course
+      { name: "Social & Religious Tolerance", creditHours: 2, totalMarks: 40, obtainedMarks: 23, isAudit: true },
     ],
   },
   {
@@ -60,9 +49,8 @@ const semesters: SeedSemester[] = [
       { name: "Quantitative Reasoning I", creditHours: 3, totalMarks: 60, obtainedMarks: 50 },
       { name: "Islamic Studies", creditHours: 2, totalMarks: 40, obtainedMarks: 26 },
       { name: "Expository Writing", creditHours: 3, totalMarks: 60, obtainedMarks: 35 },
-      { name: "Quranic Studies (Pass/Non-GPA)", creditHours: 0, totalMarks: 20, obtainedMarks: 15 },
-      { name: "Quranic Studies (Pass/Non-GPA)", creditHours: 0, totalMarks: 20, obtainedMarks: 15, isAudit: true },
-      { name: "Citizenship Education & Community Engagement (Pass/Non-GPA)", creditHours: 0, totalMarks: 60, obtainedMarks: 46, isAudit: true },
+      { name: "Quranic Studies", creditHours: 1, totalMarks: 20, obtainedMarks: 15, isAudit: true },
+      { name: "Citizenship Education & Community Engagement", creditHours: 3, totalMarks: 60, obtainedMarks: 46, isAudit: true },
     ],
   },
   {
@@ -85,8 +73,8 @@ const semesters: SeedSemester[] = [
       { name: "Analysis of Algorithms", creditHours: 3, totalMarks: 60, obtainedMarks: 50 },
       { name: "Computer Architecture", creditHours: 3, totalMarks: 60, obtainedMarks: 49 },
       { name: "Probability & Statistics", creditHours: 3, totalMarks: 60, obtainedMarks: 43 },
-      // Audit/Pass course; exclude from GPA
-      { name: "Quranic Studies II (Audit/Non-GPA)", creditHours: 0, totalMarks: 20, obtainedMarks: 14, isAudit: true },
+      // Audit/Pass course
+      { name: "Quranic Studies", creditHours: 1, totalMarks: 20, obtainedMarks: 20, isAudit: true },
     ],
   },
 ];
