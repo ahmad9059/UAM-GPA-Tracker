@@ -2,7 +2,7 @@ import { CheckCircle, Info } from "lucide-react";
 
 const grades = [
   { grade: "A", range: "80-100%", points: "4.00", color: "text-emerald-500", bg: "bg-emerald-500/10" },
-  { grade: "B", range: "65-79%", points: "3.00-3.70", color: "text-blue-500", bg: "bg-blue-500/10" },
+  { grade: "B", range: "65-79%", points: "3.00-3.70", color: "text-primary", bg: "bg-primary/10" },
   { grade: "C", range: "50-64%", points: "2.00-2.70", color: "text-amber-500", bg: "bg-amber-500/10" },
   { grade: "D", range: "40-49%", points: "1.00-1.50", color: "text-orange-500", bg: "bg-orange-500/10" },
   { grade: "F", range: "Below 40%", points: "0.00", color: "text-red-500", bg: "bg-red-500/10" },
@@ -10,7 +10,7 @@ const grades = [
 
 export function GradingSystem() {
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section className="py-24 bg-background relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />

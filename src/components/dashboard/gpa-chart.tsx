@@ -88,25 +88,25 @@ export function GPAChart({ semesters, type }: GPAChartProps) {
               <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="oklch(0.68 0.14 200)" stopOpacity={1} />
-                    <stop offset="100%" stopColor="oklch(0.68 0.14 200)" stopOpacity={0.7} />
+                    <stop offset="0%" stopColor="var(--chart-1)" stopOpacity={1} />
+                    <stop offset="100%" stopColor="var(--chart-1)" stopOpacity={0.7} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.9 0.02 240)" vertical={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
                 <XAxis
                   dataKey="name"
-                  tick={{ fontSize: 11, fill: "oklch(0.5 0.03 250)" }}
+                  tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
                   tickLine={false}
                   axisLine={false}
                 />
                 <YAxis
                   domain={[0, 4]}
-                  tick={{ fontSize: 11, fill: "oklch(0.5 0.03 250)" }}
+                  tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
                   tickLine={false}
                   axisLine={false}
                   tickFormatter={(value) => value.toFixed(1)}
                 />
-                <Tooltip content={<CustomTooltip />} cursor={{ fill: "oklch(0.68 0.14 200 / 0.1)" }} />
+                <Tooltip content={<CustomTooltip />} cursor={{ fill: "color-mix(in srgb, var(--chart-1) 10%, transparent)" }} />
                 <Bar
                   dataKey="GPA"
                   fill="url(#barGradient)"
@@ -118,20 +118,20 @@ export function GPAChart({ semesters, type }: GPAChartProps) {
               <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="oklch(0.68 0.14 200)" stopOpacity={0.3} />
-                    <stop offset="100%" stopColor="oklch(0.68 0.14 200)" stopOpacity={0.02} />
+                    <stop offset="0%" stopColor="var(--chart-1)" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="var(--chart-1)" stopOpacity={0.02} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.9 0.02 240)" vertical={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
                 <XAxis
                   dataKey="name"
-                  tick={{ fontSize: 11, fill: "oklch(0.5 0.03 250)" }}
+                  tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
                   tickLine={false}
                   axisLine={false}
                 />
                 <YAxis
                   domain={[0, 4]}
-                  tick={{ fontSize: 11, fill: "oklch(0.5 0.03 250)" }}
+                  tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
                   tickLine={false}
                   axisLine={false}
                   tickFormatter={(value) => value.toFixed(1)}
@@ -140,11 +140,11 @@ export function GPAChart({ semesters, type }: GPAChartProps) {
                 <Area
                   type="monotone"
                   dataKey="GPA"
-                  stroke="oklch(0.68 0.14 200)"
+                  stroke="var(--chart-1)"
                   strokeWidth={3}
                   fill="url(#areaGradient)"
-                  dot={{ fill: "oklch(0.68 0.14 200)", strokeWidth: 0, r: 5 }}
-                  activeDot={{ r: 7, fill: "oklch(0.68 0.14 200)", stroke: "#fff", strokeWidth: 3 }}
+                  dot={{ fill: "var(--chart-1)", strokeWidth: 0, r: 5 }}
+                  activeDot={{ r: 7, fill: "var(--chart-1)", stroke: "#fff", strokeWidth: 3 }}
                 />
               </AreaChart>
             )}

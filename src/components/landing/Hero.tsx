@@ -31,8 +31,8 @@ export function Hero() {
           {/* Left Content */}
           <div className="space-y-8">
             {/* Badge */}
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 shadow-[0_8px_30px_rgba(0,0,0,0.10)] backdrop-blur-md transition hover:bg-white/10">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-primary/25 to-primary/10 ring-1 ring-primary/20">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-primary/5 px-4 py-2 shadow-[0_8px_30px_rgba(0,0,0,0.08)] backdrop-blur-md transition hover:bg-primary/10">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 ring-1 ring-primary/20">
                 <Sparkles className="h-4 w-4 text-primary" />
               </span>
 
@@ -119,7 +119,7 @@ export function Hero() {
             {/* Main Illustration */}
             <div className="relative float-gentle">
               <img
-                src="/40478395_8848684.svg"
+                src="/hero-img-2.svg"
                 alt="Academic journey illustration"
                 className="w-full max-w-lg h-auto drop-shadow-xl"
               />

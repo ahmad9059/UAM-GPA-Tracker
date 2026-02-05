@@ -6,7 +6,7 @@ export function CTA() {
   return (
     <section className="py-24 relative overflow-hidden">
       {/* Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-primary/80" />
+      <div className="absolute inset-0 bg-primary" />
       
       {/* Decorative elements */}
       <div className="absolute inset-0 mesh-pattern opacity-10" />
@@ -16,21 +16,21 @@ export function CTA() {
       <div className="container mx-auto px-4 relative">
         <div className="max-w-3xl mx-auto text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg text-sm font-medium text-white/90 mb-8">
-            <Sparkles className="h-4 w-4" />
+          <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm px-4 py-2 rounded-lg text-sm font-medium text-primary-foreground mb-8">
+            <Sparkles className="h-4 w-4 text-primary-foreground" />
             Start Your Academic Journey
           </div>
 
           {/* Heading */}
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6 leading-tight">
             Ready to Track Your{" "}
-            <span className="text-white/90 underline decoration-white/30 underline-offset-8">
+            <span className="text-primary-foreground/90 underline decoration-primary-foreground/30 underline-offset-8">
               Success?
             </span>
           </h2>
 
           {/* Description */}
-          <p className="text-xl text-white/80 mb-10 max-w-xl mx-auto leading-relaxed">
+          <p className="text-xl text-primary-foreground/85 mb-10 max-w-xl mx-auto leading-relaxed">
             Join students who are already using UAM-University GPA Tracker to
             achieve their academic goals and visualize their progress.
           </p>
@@ -40,7 +40,7 @@ export function CTA() {
             <Button
               size="lg"
               asChild
-              className="bg-white text-primary hover:bg-white/95 text-lg px-8 h-12 rounded-lg font-semibold shadow-medium hover:shadow-elevated transition-all group"
+              className="bg-primary-foreground text-primary hover:bg-primary-foreground/95 text-lg px-8 h-12 rounded-lg font-semibold shadow-medium hover:shadow-elevated transition-all group"
             >
               <Link href="/register">
                 Get Started Free
@@ -51,14 +51,14 @@ export function CTA() {
               size="lg"
               variant="outline"
               asChild
-              className="border border-white/30 bg-white/10 text-white hover:bg-white/20 text-lg px-8 h-12 rounded-lg font-semibold backdrop-blur-sm transition-all"
+              className="border border-primary-foreground/30 bg-primary/30 text-primary-foreground hover:bg-primary/40 text-lg px-8 h-12 rounded-lg font-semibold backdrop-blur-sm transition-all"
             >
               <Link href="/calculator">Try Calculator First</Link>
             </Button>
           </div>
 
           {/* Trust Note */}
-          <p className="text-white/60 text-sm mt-8">
+          <p className="text-primary-foreground/70 text-sm mt-8">
             Free forever • No credit card required • Cancel anytime
           </p>
         </div>
