@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MNS-University GPA Tracker",
-  description: "Track your academic progress with MNS-University's official grading system. Calculate GPA, CGPA, and visualize your performance.",
-  keywords: ["GPA", "CGPA", "MNS-University", "GPA Calculator", "Academic Progress"],
+  title: "UAM-University GPA Tracker",
+  description: "Track your academic progress with UAM-University's official grading system. Calculate GPA, CGPA, and visualize your performance.",
+  keywords: ["GPA", "CGPA", "UAM-University", "GPA Calculator", "Academic Progress"],
   icons: {
     icon: "/icon.svg",
     apple: "/icon.svg",

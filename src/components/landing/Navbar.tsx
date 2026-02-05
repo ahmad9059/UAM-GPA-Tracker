@@ -35,7 +35,7 @@ export function Navbar() {
               </div>
               <div className="flex flex-col">
                 <span className="text-lg font-bold text-foreground leading-tight">
-                  MNS-University
+                  UAM-University
                 </span>
                 <span className="text-xs text-muted-foreground -mt-0.5">
                   GPA Tracker
@@ -85,10 +85,10 @@ export function Navbar() {
                   <Button variant="ghost" asChild className="font-medium">
                     <Link href="/login">Sign In</Link>
                   </Button>
-                  <Button
-                    asChild
-                    className="font-semibold shadow-soft hover:shadow-medium transition-shadow"
-                  >
+              <Button
+                asChild
+                className="font-semibold shadow-soft hover:shadow-medium transition-shadow"
+              >
                     <Link href="/register">Get Started</Link>
                   </Button>
                 </>

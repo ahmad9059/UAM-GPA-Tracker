@@ -110,13 +110,13 @@ function AppSidebar({ session }: { session: any }) {
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg overflow-hidden shadow-sm group-hover:shadow-md transition-all">
                   <img 
                     src="/icon.svg" 
-                    alt="MNS University Logo" 
+                    alt="UAM University Logo" 
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-bold text-foreground">
-                    MNS-University
+                    UAM-University
                   </span>
                   <span className="truncate text-xs text-muted-foreground">
                     GPA Tracker

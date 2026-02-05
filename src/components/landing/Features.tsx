@@ -14,7 +14,7 @@ const features = [
     icon: Calculator,
     title: "Accurate GPA Calculation",
     description:
-      "Uses MNS-University's official quality point system for precise calculations across all mark types (20, 40, 60, 80, 100).",
+      "Uses UAM-University's official quality point system for precise calculations across all mark types (20, 40, 60, 80, 100).",
     color: "from-primary to-primary/80",
     size: "large",
   },
@@ -93,7 +93,7 @@ export function Features() {
             <span className="gradient-text">Succeed</span>
           </h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Powerful features designed specifically for MNS-University students to track, 
+            Powerful features designed specifically for UAM-University students to track, 
             analyze, and improve their academic performance.
           </p>
         </div>

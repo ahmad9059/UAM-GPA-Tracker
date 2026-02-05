@@ -31,12 +31,13 @@ export function Hero() {
           {/* Left Content */}
           <div className="space-y-8">
             {/* Badge */}
-            <div className="animate-fade-in-up inline-flex items-center gap-2.5 glass-premium px-5 py-3 rounded-full shadow-soft hover:shadow-medium transition-shadow">
-              <div className="flex items-center justify-center w-7 h-7 bg-gradient-to-br from-primary/30 to-primary/20 rounded-full">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 shadow-[0_8px_30px_rgba(0,0,0,0.10)] backdrop-blur-md transition hover:bg-white/10">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-primary/25 to-primary/10 ring-1 ring-primary/20">
                 <Sparkles className="h-4 w-4 text-primary" />
-              </div>
-              <span className="text-sm font-semibold text-foreground tracking-tight">
-                Built for MNS-University Students
+              </span>
+
+              <span className="text-sm font-semibold tracking-tight text-foreground/90">
+                Built for UAM-University Students
               </span>
             </div>
 
@@ -50,7 +51,7 @@ export function Hero() {
                 with Precision
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed">
-                Calculate your GPA and CGPA using MNS-University&apos;s official
+                Calculate your GPA and CGPA using UAM-University&apos;s official
                 grading system. Visualize progress, manage courses, and achieve
                 your goals.
               </p>

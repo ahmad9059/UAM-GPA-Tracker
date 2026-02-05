@@ -13,7 +13,7 @@ const footerLinks = {
     { label: "Register", href: "/register" },
   ],
   university: [
-    { label: "MNS-University Website", href: "https://mnsuam.edu.pk", external: true },
+    { label: "UAM-University Website", href: "https://mnsuam.edu.pk", external: true },
     { label: "Student Portal", href: "https://portal.mnsuam.edu.pk", external: true },
   ],
 };
@@ -39,7 +39,7 @@ export function Footer() {
               </div>
               <div>
                 <span className="text-lg font-bold block leading-tight">
-                  MNS-University
+                  UAM-University
                 </span>
                 <span className="text-xs text-white/60 -mt-0.5 block">
                   GPA Tracker
@@ -47,14 +47,14 @@ export function Footer() {
               </div>
             </Link>
             <p className="text-white/60 leading-relaxed mb-6">
-              Track your academic progress with MNS-University&apos;s official
+              Track your academic progress with UAM-University&apos;s official
               grading system. Built for students, by students.
             </p>
             <div className="space-y-3">
               <div className="flex items-center gap-3 text-white/60">
                 <MapPin className="h-4 w-4 shrink-0" />
                 <span className="text-sm">
-                  MNS-University of Agriculture, Multan
+                  UAM-University of Agriculture, Multan
                 </span>
               </div>
               <div className="flex items-center gap-3 text-white/60">
@@ -123,11 +123,11 @@ export function Footer() {
         <div className="border-t border-white/10 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-white/40 text-sm">
-              © {new Date().getFullYear()} MNS-University GPA Tracker. All rights reserved.
+              © {new Date().getFullYear()} UAM-University GPA Tracker. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
               <span className="text-white/40 text-sm">
-                Built with ❤️ for MNS-University students
+                Built with ❤️ for UAM-University students
               </span>
             </div>
           </div>

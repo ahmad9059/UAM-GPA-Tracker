@@ -1,4 +1,4 @@
-// MNS-University Quality Point Table (per-mark, already weighted by credit hours)
+// UAM-University Quality Point Table (per-mark, already weighted by credit hours)
 // Source: data/GPA.md
 
 export type TotalMarksType = 20 | 40 | 60 | 80 | 100;

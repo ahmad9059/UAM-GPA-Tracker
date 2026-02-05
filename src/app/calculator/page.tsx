@@ -293,7 +293,7 @@ export default function CalculatorPage() {
             GPA Calculator
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Calculate your semester GPA using MNS-University&apos;s official grading system
+            Calculate your semester GPA using UAM-University&apos;s official grading system
           </p>
         </div>
 
@@ -598,7 +598,7 @@ export default function CalculatorPage() {
             <Card className="glass-card shadow-soft border-primary/20 bg-primary/5">
               <CardContent className="pt-6">
                 <p className="text-sm text-foreground leading-relaxed">
-                  <strong className="text-primary">Note:</strong> This calculator uses MNS-University&apos;s
+                  <strong className="text-primary">Note:</strong> This calculator uses UAM-University&apos;s
                   grading system. Sign in to save your courses and track your CGPA over time.
                 </p>
               </CardContent>
@@ -617,7 +617,7 @@ export default function CalculatorPage() {
           <CardHeader>
             <CardTitle className="text-xl">Grade Reference</CardTitle>
             <CardDescription>
-              MNS-University grading criteria based on percentage
+              UAM-University grading criteria based on percentage
             </CardDescription>
           </CardHeader>
           <CardContent>
