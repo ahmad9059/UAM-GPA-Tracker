@@ -11,6 +11,11 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+type CustomTooltipProps = {
+  active?: boolean;
+  payload?: Array<{ value?: number }>;
+  label?: string | number;
+};
 
 interface SemesterData {
   id: string;
@@ -42,19 +47,24 @@ export function GPAChart({ semesters, type }: GPAChartProps) {
   const totalCH = data.reduce((sum, d) => sum + d.creditHours, 0);
   const averageGPA = totalCH > 0 ? totalWeightedGPA / totalCH : 0;
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="glass-premium px-4 py-2.5 rounded-xl shadow-elevated border border-primary/10">
-          <p className="text-xs font-semibold text-muted-foreground mb-1">{label}</p>
-          <p className="text-base font-bold gradient-text">
-            GPA: {payload[0].value?.toFixed(2)}
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
+  function CustomTooltip({
+    active,
+    payload,
+    label,
+  }: CustomTooltipProps) {
+    if (!active || !payload?.length) return null;
+
+    const value = payload[0]?.value;
+
+    return (
+      <div className="glass-premium px-4 py-2.5 rounded-xl shadow-elevated border border-primary/10">
+        <p className="text-xs font-semibold text-muted-foreground mb-1">{label}</p>
+        <p className="text-base font-bold gradient-text">
+          GPA: {typeof value === "number" ? value.toFixed(2) : value}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="glass-card-elevated rounded-2xl p-6 group hover:shadow-elevated transition-all duration-300 relative overflow-hidden">
@@ -106,7 +116,10 @@ export function GPAChart({ semesters, type }: GPAChartProps) {
                   axisLine={false}
                   tickFormatter={(value) => value.toFixed(1)}
                 />
-                <Tooltip content={<CustomTooltip />} cursor={{ fill: "color-mix(in srgb, var(--chart-1) 10%, transparent)" }} />
+                <Tooltip
+                  content={<CustomTooltip />}
+                  cursor={{ fill: "color-mix(in srgb, var(--chart-1) 10%, transparent)" }}
+                />
                 <Bar
                   dataKey="GPA"
                   fill="url(#barGradient)"

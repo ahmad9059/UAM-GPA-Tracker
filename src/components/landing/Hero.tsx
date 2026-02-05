@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   Calculator,
@@ -118,10 +119,13 @@ export function Hero() {
           <div className="relative hidden lg:flex lg:justify-center lg:items-center animate-slide-in-right">
             {/* Main Illustration */}
             <div className="relative float-gentle">
-              <img
+              <Image
                 src="/hero-img-2.svg"
                 alt="Academic journey illustration"
                 className="w-full max-w-lg h-auto drop-shadow-xl"
+                width={640}
+                height={480}
+                priority
               />
             </div>
 

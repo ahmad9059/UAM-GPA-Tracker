@@ -59,27 +59,25 @@ export function AddCourseDialog({ semesterId }: AddCourseDialogProps) {
     setIsLoading(true);
     setError(null);
 
-    const creditHoursNum = parseFloat(creditHours);
+    const creditHoursNum = parseFloat(creditHours || "0");
     const obtainedMarksNum = parseFloat(obtainedMarks || "0");
 
-    if (!isAudit) {
-      if (isNaN(creditHoursNum) || creditHoursNum <= 0) {
-        setError("Credit hours must be a positive number");
-        setIsLoading(false);
-        return;
-      }
+    if (isNaN(creditHoursNum) || creditHoursNum <= 0) {
+      setError("Credit hours must be a positive number");
+      setIsLoading(false);
+      return;
+    }
 
-      if (isNaN(obtainedMarksNum) || obtainedMarksNum < 0) {
-        setError("Obtained marks must be 0 or greater");
-        setIsLoading(false);
-        return;
-      }
+    if (isNaN(obtainedMarksNum) || obtainedMarksNum < 0) {
+      setError("Obtained marks must be 0 or greater");
+      setIsLoading(false);
+      return;
+    }
 
-      if (obtainedMarksNum > totalMarks) {
-        setError(`Obtained marks cannot exceed ${totalMarks}`);
-        setIsLoading(false);
-        return;
-      }
+    if (obtainedMarksNum > totalMarks) {
+      setError(`Obtained marks cannot exceed ${totalMarks}`);
+      setIsLoading(false);
+      return;
     }
 
     const result = await createCourse(semesterId, {
@@ -149,13 +147,6 @@ export function AddCourseDialog({ semesterId }: AddCourseDialogProps) {
                 checked={isAudit}
                 onCheckedChange={(checked) => {
                   setIsAudit(checked);
-                  if (checked) {
-                    setCreditHours("0");
-                    setObtainedMarks("0");
-                  } else {
-                    setCreditHours("");
-                    setObtainedMarks("");
-                  }
                 }}
                 disabled={isLoading}
                 aria-label="Mark as audit course"
@@ -168,12 +159,12 @@ export function AddCourseDialog({ semesterId }: AddCourseDialogProps) {
                 <Input
                   id="creditHours"
                   type="number"
-                  placeholder={isAudit ? "0 (audit)" : "3"}
-                  min="0"
+                  placeholder="3"
+                  min="0.5"
                   step="0.5"
                   value={creditHours}
                   onChange={(e) => setCreditHours(e.target.value)}
-                  disabled={isLoading || isAudit}
+                  disabled={isLoading}
                 />
               </div>
 
@@ -203,7 +194,7 @@ export function AddCourseDialog({ semesterId }: AddCourseDialogProps) {
               <Input
                 id="obtainedMarks"
                 type="number"
-                placeholder={isAudit ? `0 - ${totalMarks}` : `0 - ${totalMarks}`}
+                placeholder={`0 - ${totalMarks}`}
                 min="0"
                 max={totalMarks}
                 step="0.5"
@@ -223,7 +214,8 @@ export function AddCourseDialog({ semesterId }: AddCourseDialogProps) {
               disabled={
                 isLoading ||
                 !name.trim() ||
-                (!isAudit && (!creditHours || !obtainedMarks))
+                !creditHours ||
+                !obtainedMarks
               }
             >
               {isLoading ? (

@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 import Link from "next/link";
-import { Plus, BookOpen, ChevronRight, Calendar } from "lucide-react";
+import { BookOpen, ChevronRight, Calendar } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 

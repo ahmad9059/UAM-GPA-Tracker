@@ -67,27 +67,25 @@ export function EditCourseDialog({ courseId, semesterId, initialData }: EditCour
     setIsLoading(true);
     setError(null);
 
-    const creditHoursNum = parseFloat(creditHours);
+    const creditHoursNum = parseFloat(creditHours || "0");
     const obtainedMarksNum = parseFloat(obtainedMarks || "0");
 
-    if (!isAudit) {
-      if (isNaN(creditHoursNum) || creditHoursNum <= 0) {
-        setError("Credit hours must be a positive number");
-        setIsLoading(false);
-        return;
-      }
+    if (isNaN(creditHoursNum) || creditHoursNum <= 0) {
+      setError("Credit hours must be a positive number");
+      setIsLoading(false);
+      return;
+    }
 
-      if (isNaN(obtainedMarksNum) || obtainedMarksNum < 0) {
-        setError("Obtained marks must be 0 or greater");
-        setIsLoading(false);
-        return;
-      }
+    if (isNaN(obtainedMarksNum) || obtainedMarksNum < 0) {
+      setError("Obtained marks must be 0 or greater");
+      setIsLoading(false);
+      return;
+    }
 
-      if (obtainedMarksNum > totalMarks) {
-        setError(`Obtained marks cannot exceed ${totalMarks}`);
-        setIsLoading(false);
-        return;
-      }
+    if (obtainedMarksNum > totalMarks) {
+      setError(`Obtained marks cannot exceed ${totalMarks}`);
+      setIsLoading(false);
+      return;
     }
 
     const result = await updateCourse(courseId, {
@@ -154,13 +152,6 @@ export function EditCourseDialog({ courseId, semesterId, initialData }: EditCour
                 checked={isAudit}
                 onCheckedChange={(checked) => {
                   setIsAudit(checked);
-                  if (checked) {
-                    setCreditHours("0");
-                    setObtainedMarks("0");
-                  } else {
-                    setCreditHours(String(initialData.creditHours || 0));
-                    setObtainedMarks(String(initialData.obtainedMarks || 0));
-                  }
                 }}
                 disabled={isLoading}
                 aria-label="Mark as audit course"
@@ -173,11 +164,11 @@ export function EditCourseDialog({ courseId, semesterId, initialData }: EditCour
                 <Input
                   id="edit-creditHours"
                   type="number"
-                  min="0"
+                  min="0.5"
                   step="0.5"
                   value={creditHours}
                   onChange={(e) => setCreditHours(e.target.value)}
-                  disabled={isLoading || isAudit}
+                  disabled={isLoading}
                 />
               </div>
 
@@ -226,7 +217,8 @@ export function EditCourseDialog({ courseId, semesterId, initialData }: EditCour
               disabled={
                 isLoading ||
                 !name.trim() ||
-                (!isAudit && (!creditHours || !obtainedMarks))
+                !creditHours ||
+                !obtainedMarks
               }
             >
               {isLoading ? (

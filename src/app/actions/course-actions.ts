@@ -135,8 +135,6 @@ export async function updateCourse(
       updateData.isAudit = data.isAudit;
     }
 
-    const willBeAudit = updateData.isAudit ?? existingCourse.isAudit;
-
     if (data.creditHours !== undefined) {
       if (data.creditHours <= 0) {
         return { success: false, error: "Credit hours must be positive" };

@@ -26,10 +26,13 @@ export function Navbar() {
               <div className="relative">
                 <div className="absolute inset-0 bg-primary/20 rounded-lg blur-lg group-hover:bg-primary/30 transition-all" />
                 <div className="relative w-10 h-10 rounded-lg shadow-sm overflow-hidden">
-                  <img
+                  <Image
                     src="/icon.svg"
                     alt="UAM University Logo"
                     className="w-full h-full object-cover"
+                    width={40}
+                    height={40}
+                    priority
                   />
                 </div>
               </div>

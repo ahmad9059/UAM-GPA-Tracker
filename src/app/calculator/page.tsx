@@ -120,8 +120,10 @@ export default function CalculatorPage() {
     setResult(gpaResult);
   }, [courses]);
 
+  // Run calculation when dependencies change
   useEffect(() => {
-    calculateResult();
+    void calculateResult();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calculateResult]);
 
   const calculateCgpa = useCallback(() => {
@@ -166,7 +168,8 @@ export default function CalculatorPage() {
   }, [semesters]);
 
   useEffect(() => {
-    calculateCgpa();
+    void calculateCgpa();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calculateCgpa]);
 
   const addCourse = () => {

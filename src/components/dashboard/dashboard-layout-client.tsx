@@ -84,9 +84,17 @@ const navigationItems = [
   },
 ];
 
-function AppSidebar({ session }: { session: any }) {
+type SessionData = {
+  user: {
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  };
+};
+
+function AppSidebar({ session }: { session: SessionData }) {
   const pathname = usePathname();
-  const { open, setOpen, isMobile, state } = useSidebar();
+  const { open, setOpen, state } = useSidebar();
   const userInitials = session.user.name
     ? session.user.name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2)
     : session.user.email?.slice(0, 2).toUpperCase() || "U";
@@ -108,10 +116,11 @@ function AppSidebar({ session }: { session: any }) {
             <SidebarMenuButton size="lg" asChild>
               <Link href="/dashboard" className="group" onClick={handleLogoClick}>
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg overflow-hidden shadow-sm group-hover:shadow-md transition-all">
-                  <img 
-                    src="/icon.svg" 
-                    alt="UAM University Logo" 
+                  <img
+                    src="/icon.svg"
+                    alt="UAM University Logo"
                     className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -241,7 +250,7 @@ export default function DashboardLayoutClient({
   session,
 }: {
   children: React.ReactNode;
-  session: any;
+  session: SessionData;
 }) {
   const userInitials = session.user.name
     ? session.user.name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2)

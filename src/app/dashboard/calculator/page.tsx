@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
@@ -109,7 +109,8 @@ export default function DashboardCalculatorPage() {
   }, [courses]);
 
   useEffect(() => {
-    calculateResult();
+    void calculateResult();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calculateResult]);
 
   const calculateCgpa = useCallback(() => {
@@ -154,7 +155,8 @@ export default function DashboardCalculatorPage() {
   }, [semesters]);
 
   useEffect(() => {
-    calculateCgpa();
+    void calculateCgpa();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calculateCgpa]);
 
   const addCourse = () => {
@@ -278,7 +280,7 @@ export default function DashboardCalculatorPage() {
       <div className="grid lg:grid-cols-3 gap-6">
           {/* Course Input Section */}
           <div className="lg:col-span-2 space-y-4">
-            <Card className="shadow-soft border-0">
+            <Card className="glass-card-elevated border border-border/60">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-xl">
                   <BookOpen className="h-5 w-5 text-primary" />
@@ -398,7 +400,7 @@ export default function DashboardCalculatorPage() {
             </Card>
 
             {/* CGPA Section */}
-            <Card className="shadow-soft border-0">
+            <Card className="glass-card-elevated border border-border/60">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <TrendingUp className="h-5 w-5 text-primary" />
@@ -506,7 +508,7 @@ export default function DashboardCalculatorPage() {
 
           {/* Results Section */}
           <div className="space-y-4">
-            <Card className="bg-gradient-to-br from-primary/5 to-primary/10 shadow-soft border-0">
+            <Card className="glass-card-elevated border border-border/60">
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-xl">
                   <Calculator className="h-5 w-5 text-primary" />

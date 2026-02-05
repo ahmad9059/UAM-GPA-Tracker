@@ -602,14 +602,22 @@ function SidebarMenuBadge({
 function SidebarMenuSkeleton({
   className,
   showIcon = false,
+  title = "loading",
   ...props
 }: React.ComponentProps<"div"> & {
-  showIcon?: boolean
+  showIcon?: boolean;
+  title?: string;
 }) {
-  // Random width between 50 to 90%.
+  // Stable pseudo-random width between 50% and 90% based on title hash
   const width = React.useMemo(() => {
-    return `${Math.floor(Math.random() * 40) + 50}%`
-  }, [])
+    let hash = 0;
+    for (let i = 0; i < title.length; i++) {
+      hash = (hash << 5) - hash + title.charCodeAt(i);
+      hash |= 0;
+    }
+    const normalized = Math.abs(hash % 41) + 50; // 50..90
+    return `${normalized}%`;
+  }, [title]);
 
   return (
     <div

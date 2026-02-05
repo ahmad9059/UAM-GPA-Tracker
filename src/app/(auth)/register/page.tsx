@@ -21,7 +21,7 @@ import { registerSchema, type RegisterFormData } from "@/lib/validation";
 export default function RegisterPage() {
   const router = useRouter();
 
-  const { data: session, isLoading: sessionLoading } = useSession();
+  const { data: session, isPending: sessionLoading } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -79,12 +79,13 @@ export default function RegisterPage() {
         return;
       }
 
-      if (result?.url) {
-        window.location.href = result.url;
-      } else {
-        router.push("/dashboard");
-        router.refresh();
+      const redirectUrl = (result as { url?: string } | undefined)?.url;
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
+        return;
       }
+      router.push("/dashboard");
+      router.refresh();
     } catch (err) {
       console.error("Google sign-up error:", err);
       setError("Unable to continue with Google. Please try again.");

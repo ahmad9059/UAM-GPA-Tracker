@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 import Link from "next/link";
-import { ArrowLeft, Plus, BookOpen, Award, Clock, TrendingUp, Percent } from "lucide-react";
+import { ArrowLeft, BookOpen, Award, Clock, TrendingUp, Percent } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

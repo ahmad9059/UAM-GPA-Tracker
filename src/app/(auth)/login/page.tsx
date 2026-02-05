@@ -77,12 +77,13 @@ function LoginForm() {
       }
 
       // Some adapters handle redirect internally; ensure navigation as fallback
-      if (result?.url) {
-        window.location.href = result.url;
-      } else {
-        router.push(callbackUrl);
-        router.refresh();
+      const redirectUrl = (result as { url?: string } | undefined)?.url;
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
+        return;
       }
+      router.push(callbackUrl);
+      router.refresh();
     } catch (err) {
       console.error("Google sign-in error:", err);
       setError("Unable to sign in with Google. Please try again.");

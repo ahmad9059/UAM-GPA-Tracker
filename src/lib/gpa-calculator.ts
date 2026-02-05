@@ -202,7 +202,7 @@ export function validateCourseInput(course: CourseInput): ValidationResult {
   const isAudit = Boolean(course.isAudit);
 
   // Validate credit hours
-  if (course.creditHours <= 0) {
+  if (!isAudit && course.creditHours <= 0) {
     errors.push("Credit hours must be a positive number");
   }
 

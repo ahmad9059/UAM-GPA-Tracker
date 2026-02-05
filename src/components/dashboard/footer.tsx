@@ -133,7 +133,9 @@ export default function Footer() {
   );
 }
 
-function GithubIcon(props: any) {
+type IconProps = React.SVGProps<SVGSVGElement>;
+
+function GithubIcon(props: IconProps) {
   return (
     <svg
       {...props}
@@ -153,7 +155,7 @@ function GithubIcon(props: any) {
   );
 }
 
-function LinkedinIcon(props: any) {
+function LinkedinIcon(props: IconProps) {
   return (
     <svg
       {...props}
@@ -174,7 +176,7 @@ function LinkedinIcon(props: any) {
   );
 }
 
-function MountainIcon(props: any) {
+function MountainIcon(props: IconProps) {
   return (
     <svg
       {...props}
@@ -193,7 +195,7 @@ function MountainIcon(props: any) {
   );
 }
 
-function TwitterIcon(props: any) {
+function TwitterIcon(props: IconProps) {
   return (
     <svg
       {...props}
