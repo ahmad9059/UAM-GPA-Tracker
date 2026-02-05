@@ -8,9 +8,10 @@ import { courseSchema } from "@/lib/validation";
 import type { TotalMarksType } from "@/lib/quality-points";
 
 async function getAuthenticatedUser() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const cookieHeader = (await headers()).get("cookie");
+  const session = await auth.api.getSession(
+    cookieHeader ? { headers: { cookie: cookieHeader } } : undefined
+  );
 
   if (!session?.user?.id) {
     throw new Error("Unauthorized: Please log in to continue");

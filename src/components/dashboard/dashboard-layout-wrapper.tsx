@@ -1,4 +1,4 @@
-import { headers } from "next/headers";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import DashboardLayoutClient from "./dashboard-layout-client";
@@ -8,9 +8,10 @@ export default async function DashboardLayoutWrapper({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const cookieHeader = cookies().toString();
+  const session = await auth.api.getSession(
+    cookieHeader ? { headers: { cookie: cookieHeader } } : undefined
+  );
 
   if (!session) {
     redirect("/login");
