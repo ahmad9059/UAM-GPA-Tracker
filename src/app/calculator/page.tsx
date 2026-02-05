@@ -284,18 +284,6 @@ export default function CalculatorPage() {
       <Navbar />
 
       <main className="container mx-auto px-4 pt-28 pb-16 max-w-5xl">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-primary/5 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-            <Calculator className="h-4 w-4" />
-            Quick Calculator
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            GPA Calculator
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Calculate your semester GPA using UAM-University&apos;s official grading system
-          </p>
-        </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Course Input Section */}
