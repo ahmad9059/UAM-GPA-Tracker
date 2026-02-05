@@ -44,7 +44,7 @@ export type DashboardData = {
 
 /**
  * Calculate GPA for a set of courses
- * Formula: GPA = Sum of (qualityPoint * creditHours) / Sum of creditHours
+ * Formula: GPA = Sum of qualityPoint / Sum of creditHours
  */
 export function calculateGPA(courses: CourseInput[]): GPAResult {
   // Handle empty courses
@@ -57,8 +57,20 @@ export function calculateGPA(courses: CourseInput[]): GPAResult {
     };
   }
 
+  // Ignore non-GPA courses (creditHours <= 0)
+  const gpaCourses = courses.filter((course) => course.creditHours > 0);
+
+  if (gpaCourses.length === 0) {
+    return {
+      gpa: 0,
+      totalQualityPoints: 0,
+      totalCreditHours: 0,
+      courses: [],
+    };
+  }
+
   // Process each course to get quality points
-  const processedCourses: CourseWithQP[] = courses.map((course) => {
+  const processedCourses: CourseWithQP[] = gpaCourses.map((course) => {
     const { qualityPoint, grade, percentage } = getQualityPoint(
       course.obtainedMarks,
       course.totalMarks
@@ -85,15 +97,15 @@ export function calculateGPA(courses: CourseInput[]): GPAResult {
     0
   );
 
-  // Calculate GPA (handle division by zero)
+  // Calculate GPA (handle division by zero) – keep full precision, round only on display
   const gpa = totalCreditHours > 0
-    ? Math.round((totalQualityPoints / totalCreditHours) * 100) / 100
+    ? totalQualityPoints / totalCreditHours
     : 0;
 
   return {
     gpa,
-    totalQualityPoints: Math.round(totalQualityPoints * 100) / 100,
-    totalCreditHours: Math.round(totalCreditHours * 100) / 100,
+    totalQualityPoints,
+    totalCreditHours,
     courses: processedCourses,
   };
 }
@@ -123,7 +135,7 @@ export function calculateCGPA(semesters: SemesterData[]): number {
     return 0;
   }
 
-  return Math.round((totalQualityPoints / totalCreditHours) * 100) / 100;
+  return totalQualityPoints / totalCreditHours;
 }
 
 /**
@@ -171,8 +183,8 @@ export function processDashboardData(
   return {
     semesters: processedSemesters,
     cgpa,
-    totalCreditHours: Math.round(totalCreditHours * 100) / 100,
-    totalQualityPoints: Math.round(totalQualityPoints * 100) / 100,
+    totalCreditHours,
+    totalQualityPoints,
   };
 }
 

@@ -35,7 +35,12 @@ export function GPAChart({ semesters, type }: GPAChartProps) {
     return null;
   }
 
-  const averageGPA = data.reduce((sum, d) => sum + d.GPA, 0) / data.length;
+  const totalWeightedGPA = data.reduce(
+    (sum, d) => sum + d.GPA * d.creditHours,
+    0
+  );
+  const totalCH = data.reduce((sum, d) => sum + d.creditHours, 0);
+  const averageGPA = totalCH > 0 ? totalWeightedGPA / totalCH : 0;
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
