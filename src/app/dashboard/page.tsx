@@ -25,6 +25,13 @@ export default async function DashboardPage() {
 
   const { semesters, cgpa, totalCreditHours, totalQualityPoints } = result.data;
 
+  // Strip non-serializable fields (Dates) before passing to client components.
+  const clientSemesters = semesters.map((s) => ({
+    ...s,
+    createdAt: s.createdAt?.toISOString?.() ?? null,
+    updatedAt: s.updatedAt?.toISOString?.() ?? null,
+  }));
+
   const getGPAColor = (gpa: number) => {
     if (gpa >= 3.5) return "bg-gradient-to-br from-chart-2/20 to-chart-2/10 text-chart-2 border border-chart-2/20";
     if (gpa >= 3.0) return "bg-gradient-to-br from-primary/20 to-primary/10 text-primary border border-primary/20";
@@ -51,16 +58,16 @@ export default async function DashboardPage() {
         cgpa={cgpa}
         totalCreditHours={totalCreditHours}
         totalQualityPoints={totalQualityPoints}
-        semesterCount={semesters.length}
+        semesterCount={clientSemesters.length}
       />
 
       {/* Charts Section */}
-      {semesters.length > 0 && (
+      {clientSemesters.length > 0 && (
         <div>
           <h2 className="text-xl font-bold text-foreground mb-5">Analytics Overview</h2>
           <div className="grid lg:grid-cols-2 gap-6">
-            <GPAChart semesters={semesters} type="bar" />
-            <GPAChart semesters={semesters} type="line" />
+            <GPAChart semesters={clientSemesters} type="bar" />
+            <GPAChart semesters={clientSemesters} type="line" />
           </div>
         </div>
       )}
@@ -69,14 +76,14 @@ export default async function DashboardPage() {
       <div>
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-xl font-bold text-foreground">Your Semesters</h2>
-          {semesters.length > 0 && (
+          {clientSemesters.length > 0 && (
             <Link href="#" className="text-sm text-primary hover:text-primary/80 font-semibold flex items-center gap-1 transition-colors">
               View all <ChevronRight className="h-4 w-4" />
             </Link>
           )}
         </div>
 
-        {semesters.length === 0 ? (
+        {clientSemesters.length === 0 ? (
           <div className="glass-card-elevated rounded-2xl border-2 border-dashed border-primary/20 p-16 text-center">
             <div className="flex flex-col items-center justify-center">
               <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center mb-5 shadow-soft">
@@ -91,7 +98,7 @@ export default async function DashboardPage() {
           </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {semesters.map((semester, index) => (
+            {clientSemesters.map((semester, index) => (
               <div
                 key={semester.id}
                 className="glass-card-elevated rounded-2xl group hover:shadow-elevated transition-all duration-300 hover:scale-[1.02] relative overflow-hidden"

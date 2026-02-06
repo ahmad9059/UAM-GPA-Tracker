@@ -15,27 +15,14 @@ export async function middleware(request: NextRequest) {
     request.cookies.get("__Secure-better-auth.session_token")?.value ||
     request.cookies.get("better-auth.session_token")?.value;
 
-  // If the user hits login/register while already authenticated, send them back
-  if (
-    sessionCookieValue &&
-    (pathname === "/login" || pathname === "/register")
-  ) {
-    const target =
-      request.nextUrl.searchParams.get("callbackUrl") || "/dashboard";
-    return NextResponse.redirect(new URL(target, request.url));
-  }
+  // Public routes pass through
+  if (isPublicRoute) return NextResponse.next();
 
-  if (isPublicRoute) {
-    return NextResponse.next();
-  }
-
-  // Check for protected routes (dashboard)
-  if (pathname.startsWith("/dashboard")) {
-    if (!sessionCookieValue) {
-      const loginUrl = new URL("/login", request.url);
-      loginUrl.searchParams.set("callbackUrl", pathname);
-      return NextResponse.redirect(loginUrl);
-    }
+  // Protect dashboard routes: if no session cookie, send to login.
+  if (pathname.startsWith("/dashboard") && !sessionCookieValue) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("callbackUrl", pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
   return NextResponse.next();

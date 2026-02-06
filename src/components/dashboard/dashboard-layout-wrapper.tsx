@@ -17,5 +17,18 @@ export default async function DashboardLayoutWrapper({
     redirect("/login");
   }
 
-  return <DashboardLayoutClient session={session}>{children}</DashboardLayoutClient>;
+  // Strip non-serializable fields (Dates, symbols) before sending to client.
+  const clientSession = {
+    user: {
+      name: session.user.name ?? null,
+      email: session.user.email ?? null,
+      image: session.user.image ?? null,
+    },
+  };
+
+  return (
+    <DashboardLayoutClient session={clientSession}>
+      {children}
+    </DashboardLayoutClient>
+  );
 }
