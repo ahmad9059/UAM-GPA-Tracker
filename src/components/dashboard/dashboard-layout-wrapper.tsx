@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import DashboardLayoutClient from "./dashboard-layout-client";
@@ -8,7 +8,8 @@ export default async function DashboardLayoutWrapper({
 }: {
   children: React.ReactNode;
 }) {
-  const cookieHeader = cookies().toString();
+  // `headers()` is async in Next 16; grab the raw cookie header for Better Auth
+  const cookieHeader = (await headers()).get("cookie") ?? undefined;
   const session = await auth.api.getSession(
     cookieHeader ? { headers: { cookie: cookieHeader } } : undefined
   );
