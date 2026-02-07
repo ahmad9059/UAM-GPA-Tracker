@@ -11,6 +11,8 @@ import {
   BookOpen,
   ChevronDown,
   ChevronUp,
+  Award,
+  Sparkles,
 } from "lucide-react";
 import { Navbar, Footer } from "@/components/landing";
 
@@ -22,6 +24,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 import { calculateGPA, type GPAResult } from "@/lib/gpa-calculator";
 import {
@@ -77,6 +80,7 @@ export default function CalculatorPage() {
   const [cgpa, setCgpa] = useState(0);
   const [cgpaErrors, setCgpaErrors] = useState<Record<string, string>>({});
   const [showCgpa, setShowCgpa] = useState(false);
+  const [showResultDialog, setShowResultDialog] = useState(false);
 
   const calculateResult = useCallback(() => {
     const newErrors: Record<string, string> = {};
@@ -291,6 +295,11 @@ export default function CalculatorPage() {
       <Navbar />
 
       <main className="container mx-auto px-4 pt-28 pb-16 max-w-5xl">
+        {/* Page Title - Better visibility */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">GPA Calculator</h1>
+          <p className="text-muted-foreground">Calculate your GPA easily and accurately</p>
+        </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Course Input Section */}
@@ -309,16 +318,18 @@ export default function CalculatorPage() {
                 {courses.map((course, index) => (
                   <div
                     key={course.id}
-                    className="grid grid-cols-12 gap-3 items-start p-4 bg-accent/50 rounded-lg border border-border/50"
+                    className="grid grid-cols-12 gap-3 items-start p-4 bg-accent/50 rounded-lg border border-border/50 hover:border-primary/30 transition-colors"
                   >
                     <div className="col-span-12 sm:col-span-1 flex items-center justify-center">
-                      <span className="text-sm font-medium text-muted-foreground">
-                        #{index + 1}
-                      </span>
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                        <span className="text-sm font-bold text-primary">
+                          {index + 1}
+                        </span>
+                      </div>
                     </div>
 
                     <div className="col-span-6 sm:col-span-3">
-                      <label className="text-xs text-muted-foreground mb-1 block">
+                      <label className="text-xs font-medium text-foreground mb-1.5 block">
                         Credit Hours
                       </label>
                       <Input
@@ -332,20 +343,20 @@ export default function CalculatorPage() {
                             e.target.value
                           )
                         }
-                        className={errors[`${course.id}-creditHours`] ? "border-red-500" : ""}
+                        className={`h-11 text-base ${errors[`${course.id}-creditHours`] ? "border-red-500" : ""}`}
                         min="1"
                         max="5"
                         step="1"
                       />
                       {errors[`${course.id}-creditHours`] && (
-                        <span className="text-xs text-red-500">
+                        <span className="text-xs text-red-500 mt-1 block">
                           {errors[`${course.id}-creditHours`]}
                         </span>
                       )}
                     </div>
 
                     <div className="col-span-6 sm:col-span-3">
-                      <label className="text-xs text-muted-foreground mb-1 block">
+                      <label className="text-xs font-medium text-foreground mb-1.5 block">
                         Total Marks
                       </label>
                       <Select
@@ -358,7 +369,7 @@ export default function CalculatorPage() {
                           )
                         }
                       >
-                        <SelectTrigger>
+                        <SelectTrigger className="h-11 text-base">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -372,7 +383,7 @@ export default function CalculatorPage() {
                     </div>
 
                     <div className="col-span-10 sm:col-span-4">
-                      <label className="text-xs text-muted-foreground mb-1 block">
+                      <label className="text-xs font-medium text-foreground mb-1.5 block">
                         Obtained Marks
                       </label>
                       <Input
@@ -382,34 +393,44 @@ export default function CalculatorPage() {
                         onChange={(e) =>
                           updateCourse(course.id, "obtainedMarks", e.target.value)
                         }
-                        className={errors[`${course.id}-obtainedMarks`] ? "border-red-500" : ""}
+                        className={`h-11 text-base ${errors[`${course.id}-obtainedMarks`] ? "border-red-500" : ""}`}
                         min="0"
                         max={course.totalMarks}
                       />
                       {errors[`${course.id}-obtainedMarks`] && (
-                        <span className="text-xs text-red-500">
+                        <span className="text-xs text-red-500 mt-1 block">
                           {errors[`${course.id}-obtainedMarks`]}
                         </span>
                       )}
                     </div>
 
-                    <div className="col-span-2 sm:col-span-1 flex items-end">
+                    <div className="col-span-2 sm:col-span-1 flex items-end justify-center sm:justify-start">
                       <Button
                         variant="ghost"
                         size="icon"
                         onClick={() => removeCourse(course.id)}
                         disabled={courses.length === 1}
-                        className="text-muted-foreground hover:text-destructive"
+                        className="text-muted-foreground hover:text-destructive h-11 w-11"
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <Trash2 className="h-5 w-5" />
                       </Button>
                     </div>
                   </div>
                 ))}
 
-                <Button variant="outline" onClick={addCourse} className="w-full font-semibold">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Course
+                <Button variant="outline" onClick={addCourse} className="w-full font-semibold h-11 text-base">
+                  <Plus className="h-5 w-5 mr-2" />
+                  Add Another Course
+                </Button>
+
+                {/* Mobile Calculate Button */}
+                <Button 
+                  onClick={() => setShowResultDialog(true)}
+                  className="w-full font-semibold lg:hidden mt-4 h-12 text-base shadow-lg"
+                  disabled={result.courses.length === 0}
+                >
+                  <Calculator className="h-5 w-5 mr-2" />
+                  Calculate My GPA
                 </Button>
               </CardContent>
             </Card>
@@ -544,9 +565,9 @@ export default function CalculatorPage() {
             </Collapsible>
           </div>
 
-          {/* Results Section */}
-          <div className="space-y-4">
-            <Card className="glass-card border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10 shadow-soft">
+          {/* Results Section - Desktop Only */}
+          <div className="space-y-4 hidden lg:block">
+            <Card className="glass-card border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10 shadow-soft sticky top-24">
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-xl">
                   <Calculator className="h-5 w-5 text-primary" />
@@ -621,14 +642,90 @@ export default function CalculatorPage() {
                 </p>
               </CardContent>
             </Card>
-
-            <Button asChild className="w-full font-semibold shadow-soft hover:shadow-medium transition-shadow">
-              <Link href="/register">
-                Save Your Progress
-              </Link>
-            </Button>
           </div>
         </div>
+
+        {/* Mobile Result Dialog */}
+        <Dialog open={showResultDialog} onOpenChange={setShowResultDialog}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2 text-xl">
+                <Award className="h-6 w-6 text-primary" />
+                Your GPA Result
+              </DialogTitle>
+            </DialogHeader>
+            <div className="space-y-6">
+              {/* GPA Display */}
+              <div className="relative">
+                <div className="absolute -top-2 -right-2">
+                  <Sparkles className="h-8 w-8 text-yellow-500 animate-pulse" />
+                </div>
+                <div className="text-center py-8 bg-gradient-to-br from-primary/10 to-primary/20 rounded-xl border-2 border-primary/30">
+                  <div className="text-6xl font-bold text-primary mb-2">
+                    {result.gpa.toFixed(2)}
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    out of 4.00
+                  </p>
+                </div>
+              </div>
+
+              {/* Stats */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center p-4 bg-accent rounded-lg">
+                  <div className="text-2xl font-bold text-foreground">{result.totalCreditHours}</div>
+                  <div className="text-xs text-muted-foreground mt-1">Credit Hours</div>
+                </div>
+                <div className="text-center p-4 bg-accent rounded-lg">
+                  <div className="text-2xl font-bold text-foreground">{result.totalQualityPoints.toFixed(2)}</div>
+                  <div className="text-xs text-muted-foreground mt-1">Quality Points</div>
+                </div>
+              </div>
+
+              {/* Breakdown */}
+              {result.courses.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="font-semibold text-sm text-foreground flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4 text-primary" />
+                    Grade Breakdown
+                  </h4>
+                  <div className="max-h-48 overflow-y-auto space-y-2">
+                    {result.courses.map((course, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 bg-accent/50 rounded-lg border border-border/50"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-muted-foreground">
+                            #{index + 1}
+                          </span>
+                          <Badge variant="outline" className={getGradeColor(course.grade)}>
+                            {course.grade}
+                          </Badge>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-sm font-medium">
+                            QP: {course.qualityPoint.toFixed(2)}
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            {course.percentage.toFixed(1)}%
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* CTA */}
+              <Button asChild className="w-full font-semibold">
+                <Link href="/register">
+                  Sign Up to Track Progress
+                </Link>
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
 
         {/* Grade Reference Table */}
         <Card className="mt-12 glass-card shadow-soft border-border/50">
